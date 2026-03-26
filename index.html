@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,409 +11,839 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Pedro Padron" />
     <link rel="manifest" href="/site.webmanifest" />
-    <!-- Use the Open Sans font from Google Fonts -->
+
+    <meta name="description" content="Pedro Padron is a front-end developer specializing in Shopify, Webflow, and modern web experiences. View projects, certifications, and get in touch.">
+    <meta name="author" content="Pedro Padron">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://padronpedro.github.io/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Pedro Padron - Front-end Developer / Shopify Developer">
+    <meta property="og:description" content="Front-end developer specializing in Shopify, Webflow, and modern web experiences. View projects, certifications, and get in touch.">
+    <meta property="og:image" content="https://padronpedro.github.io/images/padronpedro.png">
+    <meta property="og:url" content="https://padronpedro.github.io/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pedro Padron - Front-end Developer / Shopify Developer">
+    <meta name="twitter:description" content="Front-end developer specializing in Shopify, Webflow, and modern web experiences.">
+    <meta name="twitter:image" content="https://padronpedro.github.io/images/padronpedro.png">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Pedro Padron",
+        "jobTitle": "Front-end Developer",
+        "url": "https://padronpedro.github.io/",
+        "image": "https://padronpedro.github.io/images/padronpedro.png",
+        "email": "padronpedro@gmail.com",
+        "sameAs": [
+            "https://github.com/padronpedro",
+            "https://linkedin.com/in/padronpedro"
+        ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"></noscript>
+    <script defer src="https://cdn.tailwindcss.com"></script>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        /* Focus indicators */
+        a:focus-visible, button:focus-visible {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+
+        /* CTA buttons */
+        .cta-primary {
+            padding: 14px 32px;
+            background: #2563eb;
+            color: #fff;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: transform 0.2s;
+        }
+        .cta-primary:hover, .cta-primary:focus { transform: scale(1.03); }
+        .cta-secondary {
+            padding: 14px 32px;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #e2e8f0;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .cta-secondary:hover, .cta-secondary:focus { border-color: rgba(255,255,255,0.3); }
+
+        /* Skip navigation */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 16px;
+            padding: 12px 24px;
+            background: #3b82f6;
+            color: #fff;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 100;
+            text-decoration: none;
+            transition: top 0.2s;
+        }
+        .skip-link:focus {
+            top: 16px;
+        }
         body {
-            font-family: 'Open Sans', sans-serif;
-            background-color: #f7f9fc;
-        }
-        .section-card {
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        }
-        .project-card, .badge-card {
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            overflow-x: hidden;
         }
 
-        .fade-in {
+        /* Aurora/mesh animated background */
+        .aurora {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .aurora::before, .aurora::after {
+            content: '';
+            position: absolute;
+            width: 600px; height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.35;
+        }
+        .aurora::before {
+            top: -200px; left: -100px;
+            background: #3b82f6;
+            animation: float1 12s ease-in-out infinite alternate;
+        }
+        .aurora::after {
+            bottom: -200px; right: -100px;
+            background: #8b5cf6;
+            animation: float2 14s ease-in-out infinite alternate;
+        }
+        @keyframes float1 { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(150px,100px) scale(1.2); } }
+        @keyframes float2 { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(-120px,-80px) scale(1.1); } }
+
+        /* Third blob */
+        .blob3 {
+            position: fixed;
+            width: 500px; height: 500px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.2;
+            background: #6366f1;
+            top: 40%; left: 30%;
+            z-index: -1;
+            animation: float3 16s ease-in-out infinite alternate;
+        }
+        @keyframes float3 { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(80px,-60px) scale(1.15); } }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+
+        /* Glass panel */
+        .glass-panel {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* Gradient text */
+        .grad-text-1 {
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6, #f43f5e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Project card */
+        .project-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .project-card:hover {
+            border-color: rgba(255,255,255,0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .project-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            opacity: 0.85;
+            transition: opacity 0.3s;
+        }
+        .project-card:hover img { opacity: 1; }
+
+        /* Colored tags */
+        .tag-grad {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .tag-shopify { background: rgba(16,185,129,0.15); color: #6ee7b7; border-color: rgba(16,185,129,0.2); }
+        .tag-webflow { background: rgba(99,102,241,0.15); color: #a5b4fc; border-color: rgba(99,102,241,0.2); }
+        .tag-nuxt { background: rgba(139,92,246,0.15); color: #c4b5fd; border-color: rgba(139,92,246,0.2); }
+        .tag-js { background: rgba(234,179,8,0.15); color: #fde68a; border-color: rgba(234,179,8,0.2); }
+
+        /* Nav */
+        .nav-float {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            background: rgba(5,5,16,0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 999px;
+            padding: 10px 16px;
+            display: flex;
+            gap: 6px;
+        }
+        .nav-slider {
+            position: absolute;
+            height: calc(100% - 20px);
+            top: 10px;
+            left: 0;
+            background: #ffffff;
+            border-radius: 999px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInAnimation 0.6s ease-out forwards;
+            pointer-events: none;
+        }
+        .nav-float:hover .nav-slider {
+            opacity: 1;
+        }
+        .nav-float a {
+            position: relative;
+            z-index: 2;
+            padding: 8px 18px;
+            border-radius: 999px;
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-float a:hover {
+            color: #0f172a;
+            transition: color 0.15s ease 0.1s;
         }
 
-        .fade-in-delay-1 { animation-delay: 0.1s; }
-        .fade-in-delay-2 { animation-delay: 0.2s; }
-        .fade-in-delay-3 { animation-delay: 0.3s; }
+        /* Badge */
+        .badge-glow {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 14px;
+            transition: all 0.3s;
+        }
+        .badge-glow:hover {
+            border-color: rgba(6,182,212,0.3);
+            box-shadow: 0 0 30px rgba(6,182,212,0.08);
+        }
+        .badge-glow img { width: 80px; height: 80px; border-radius: 50%; }
 
-        @keyframes fadeInAnimation {
-            to {
+        /* Connect card */
+        .connect-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 14px;
+            padding: 28px 20px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            text-decoration: none;
+            color: #e2e8f0;
+            transition: all 0.3s;
+        }
+        .connect-card:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        }
+        .connect-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .connect-info { flex: 1; }
+        .connect-info .label { font-weight:700; font-size:1rem; margin-bottom:2px; }
+        .connect-info .handle { font-size:0.85rem; color:#94a3b8; }
+        .connect-arrow {
+            display: none;
+        }
+
+        /* Glow ring behind photo */
+        .glow-ring {
+            position: relative;
+        }
+        .glow-ring::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            background: conic-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.05), rgba(255,255,255,0.5), rgba(255,255,255,0.05), rgba(255,255,255,0.5));
+            animation: spinRing 6s linear infinite;
+            opacity: 0.6;
+        }
+        @keyframes spinRing { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .glow-ring img {
+            position: relative;
+            z-index: 1;
+            width: 140px; height: 140px;
+            border-radius: 50%;
+            border: 4px solid #0f172a;
+            object-fit: cover;
+        }
+
+        /* Stat card border trace */
+        .stat-card {
+            position: relative;
+            text-align: center;
+            padding: 24px 16px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: transform 0.3s ease;
+            cursor: default;
+        }
+        .stat-card:hover { transform: translateY(-2px); }
+        .stat-card svg.border-trace {
+            position: absolute;
+            inset: -1px;
+            width: calc(100% + 2px);
+            height: calc(100% + 2px);
+            pointer-events: none;
+        }
+        .stat-card svg.border-trace rect {
+            fill: none;
+            stroke: #3b82f6;
+            stroke-width: 2;
+            width: calc(100% - 2px);
+            height: calc(100% - 2px);
+            rx: 14;
+            ry: 14;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            transition: none;
+        }
+        .stat-card:hover svg.border-trace rect {
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 2s ease;
+        }
+
+        /* Filter tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .filter-tabs button {
+            padding: 8px 20px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: transparent;
+            color: #94a3b8;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .filter-tabs button:hover,
+        .filter-tabs button.active {
+            background: #fff;
+            color: #0f172a;
+            border-color: #fff;
+        }
+        .project-card.hidden {
+            display: none;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 8px;
+        }
+
+        /* Mobile hamburger */
+        .nav-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 4px;
+            z-index: 2;
+        }
+        .nav-links { display: flex; gap: 6px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-float {
+                padding: 6px 8px;
+                gap: 0;
+                left: 24px;
+                transform: none;
+                border-radius: 12px;
+            }
+            .nav-hamburger { display: block; order: -1; }
+            .nav-links {
+                display: flex;
+                position: absolute;
+                top: calc(100% + 10px);
+                left: 0;
+                background: rgba(5,5,16,0.85);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255,255,255,0.08);
+                border-radius: 16px;
+                padding: 12px;
+                flex-direction: column;
+                gap: 4px;
+                min-width: 160px;
+                opacity: 0;
+                transform: translateY(-8px) scale(0.95);
+                transform-origin: top left;
+                pointer-events: none;
+                transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .nav-links.open {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
+                pointer-events: auto;
+            }
+            .nav-slider { display: none; }
+            .nav-float a {
+                padding: 10px 16px;
+                border-radius: 10px;
+            }
+            .nav-float a:hover {
+                background: rgba(255,255,255,0.1);
+                color: #fff;
+            }
+            .glow-ring img {
+                width: 110px; height: 110px;
+            }
+            .glass-panel { padding: 28px !important; }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .connect-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 12px !important;
             }
         }
     </style>
 </head>
-<body class="antialiased text-gray-800">
+<body>
 
-    <!-- Header and Navigation -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-gray-900">Pedro Padr&oacute;n</h1>
-            <div class="hidden sm:flex space-x-6">
-                <a href="#about" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">About</a>
-                <a href="#projects" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">Projects</a>
-                <a href="#shopify-badges" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">Badges</a>
-                <a href="#contact" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">Contact</a>
-            </div>
-            <button id="mobile-menu-button" class="sm:hidden text-gray-600 focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                </svg>
-            </button>
-        </nav>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden sm:hidden bg-white shadow-md">
-            <a href="#about" class="block py-2 px-4 text-gray-600 hover:bg-gray-100 transition-colors">About</a>
-            <a href="#projects" class="block py-2 px-4 text-gray-600 hover:bg-gray-100 transition-colors">Projects</a>
-            <a href="#shopify-badges" class="block py-2 px-4 text-gray-600 hover:bg-gray-100 transition-colors">Badges</a>
-            <a href="#contact" class="block py-2 px-4 text-gray-600 hover:bg-gray-100 transition-colors">Contact</a>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="blob3" aria-hidden="true"></div>
+
+    <!-- Nav -->
+    <header>
+    <nav class="nav-float" id="nav" aria-label="Main navigation">
+        <div class="nav-slider" id="nav-slider" aria-hidden="true"></div>
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="nav-links" id="nav-links">
+            <a href="#about">About</a>
+            <a href="#projects">Work</a>
+            <a href="#badges">Badges</a>
+            <a href="#connect">Connect</a>
         </div>
+    </nav>
+    <script>
+        const nav = document.getElementById('nav');
+        const slider = document.getElementById('nav-slider');
+        const navLinks = document.getElementById('nav-links');
+        const links = navLinks.querySelectorAll('a');
+        const hamburger = document.getElementById('nav-hamburger');
+
+        // Slider effect (desktop)
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                const rect = link.getBoundingClientRect();
+                const navRect = nav.getBoundingClientRect();
+                slider.style.left = (rect.left - navRect.left) + 'px';
+                slider.style.width = rect.width + 'px';
+            });
+        });
+        nav.addEventListener('mouseleave', () => {
+            slider.style.opacity = '0';
+        });
+        nav.addEventListener('mouseenter', () => {
+            slider.style.opacity = '1';
+        });
+
+        // Hamburger toggle (mobile)
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+            const isOpen = navLinks.classList.contains('open');
+            hamburger.setAttribute('aria-expanded', isOpen);
+        });
+        // Close menu on link click
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+            });
+        });
+    </script>
     </header>
 
-    <main class="container mx-auto px-4 py-8">
+    <main id="main-content">
 
-        <!-- Hero Section -->
-        <section class="section-card flex flex-col md:flex-row items-center justify-between p-8 md:p-12 rounded-xl shadow-lg mb-8 fade-in">
-            <div class="md:w-3/5 text-center md:text-left mb-6 md:mb-0">
-                <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 leading-tight mb-2">Hello, I'm Pedro</h2>
-                <p class="text-lg sm:text-xl text-gray-600 mb-6">
-                    A passionate developer creating modern and responsive web applications and Shopify stores.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                    <a href="#contact" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors">
-                      Let's Connect
-                    </a>
-                    <a href="#projects" class="px-6 py-3 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-300 transition-colors">
-                        View Projects
-                    </a>
+    <!-- Hero -->
+    <section style="min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 24px;">
+        <div>
+            <div class="glow-ring" style="display:inline-block;margin-bottom:32px;">
+                <img src="/images/padronpedro.png" alt="Portrait photo of Pedro Padron">
+            </div>
+            <h1 style="font-size:clamp(2.5rem, 5vw, 4rem);font-weight:800;line-height:1.1;margin-bottom:16px;">
+                Pedro Padr&oacute;n
+            </h1>
+            <p style="font-size:1.1rem;color:#94a3b8;max-width:480px;margin:0 auto 32px;line-height:1.7;">
+                Front-end developer specializing in Shopify, Webflow, and modern web experiences.
+            </p>
+            <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+                <a href="#projects" class="cta-primary">View Projects</a>
+                <a href="#connect" class="cta-secondary">Get in Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="container" style="padding:100px 24px;">
+        <div class="glass-panel" style="padding:48px;">
+            <p class="section-label" style="color:#60a5fa;">About Me</p>
+            <h2 style="font-size:1.8rem;font-weight:700;margin-bottom:20px;">Building the web, beautifully.</h2>
+            <p style="color:#94a3b8;line-height:1.8;margin-bottom:24px;">
+                I'm a dedicated front-end developer with specialized experience in the Shopify ecosystem. My expertise spans the entire development lifecycle, from seamless store migrations and complex API integrations to creating custom, high-performance storefronts. Passionate about the latest web technologies, I build clean, efficient, and scalable code.
+            </p>
+            <div class="stats-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px;">
+                <div class="stat-card">
+                    <svg class="border-trace" preserveAspectRatio="none" aria-hidden="true"><rect x="1" y="1" rx="14" ry="14"/></svg>
+                    <p style="font-size:2rem;font-weight:800;color:#ffffff;">23+</p>
+                    <p style="font-size:0.8rem;color:rgba(255,255,255,0.7);">Projects</p>
+                </div>
+                <div class="stat-card">
+                    <svg class="border-trace" preserveAspectRatio="none" aria-hidden="true"><rect x="1" y="1" rx="14" ry="14"/></svg>
+                    <p style="font-size:2rem;font-weight:800;color:#ffffff;">5+</p>
+                    <p style="font-size:0.8rem;color:rgba(255,255,255,0.7);">Platforms</p>
+                </div>
+                <div class="stat-card">
+                    <svg class="border-trace" preserveAspectRatio="none" aria-hidden="true"><rect x="1" y="1" rx="14" ry="14"/></svg>
+                    <p style="font-size:2rem;font-weight:800;color:#ffffff;">2</p>
+                    <p style="font-size:0.8rem;color:rgba(255,255,255,0.7);">Badges</p>
+                </div>
+                <div class="stat-card">
+                    <svg class="border-trace" preserveAspectRatio="none" aria-hidden="true"><rect x="1" y="1" rx="14" ry="14"/></svg>
+                    <p style="font-size:2rem;font-weight:800;color:#ffffff;">&infin;</p>
+                    <p style="font-size:0.8rem;color:rgba(255,255,255,0.7);">Curiosity</p>
                 </div>
             </div>
-            <div class="md:w-2/5 flex justify-center md:justify-end">
-                <img src="images/padronpedro.png" alt="Pedro Padron - Profile Photo" class="w-40 h-40 sm:w-48 sm:h-48 rounded-full shadow-lg">
-            </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- About Section -->
-        <section id="about" class="section-card p-8 rounded-xl shadow-lg mb-8 fade-in fade-in-delay-1">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">About Me</h2>
-            <p class="text-gray-600 leading-relaxed max-w-2xl">
-                I'm a dedicated front-end developer with specialized experience in the Shopify ecosystem. My expertise spans the entire development lifecycle, from seamless store migrations and complex API integrations to creating custom, high-performance storefronts.
-                <br><br>
-                I am passionate about staying current with the latest web technologies and trends, and I'm always eager to take on new challenges to expand my skill set. I'm committed to building clean, efficient, and scalable code that drives business growth.
-            </p>
-            <div class="mt-6 flex flex-wrap gap-4 items-center">
-                <a href="https://github.com/padronpedro" target="_blank" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.419 2.864 8.169 6.838 9.531.5.092.682-.217.682-.483 0-.237-.009-.868-.014-1.704-2.782.605-3.37-.67-3.37-.67-.454-1.156-1.11-1.464-1.11-1.464-.908-.618.069-.607.069-.607 1.004.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.644.35-1.088.636-1.338-2.222-.253-4.555-1.112-4.555-4.943 0-1.091.39-1.984 1.029-2.682-.103-.253-.446-1.27.098-2.651 0 0 .84-.27 2.75 1.025.798-.222 1.643-.333 2.502-.337.859.004 1.704.115 2.502.337 1.909-1.295 2.747-1.025 2.747-1.025.546 1.381.202 2.398.1 2.651.64.698 1.028 1.591 1.028 2.682 0 3.839-2.337 4.685-4.566 4.935.359.308.678.915.678 1.846 0 1.338-.012 2.417-.012 2.747 0 .267.18.577.688.48A10 10 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd" />
-                    </svg>
-                    <span>padronpedro</span>
-                </a>
-                <a href="https://www.linkedin.com/in/padronpedro/" target="_blank" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14zM8 11.4v6.6H5v-6.6h3zM6.5 9.4a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM19 19V11.8c0-2.4-1.4-3.5-3.5-3.5-1.5 0-2.3 0.8-2.7 1.6V9.4H10v9.6h3v-5.2c0-1.2 0.7-1.6 1.5-1.6.8 0 1.5 0.5 1.5 1.6V19h3z"/>
-                    </svg>
-                    <span>padronpedro</span>
-                </a>
-            </div>
-        </section>
+    <!-- Projects -->
+    <section id="projects" class="container" style="padding:40px 24px 100px;">
+        <p class="section-label" style="color:#60a5fa;">Selected Work</p>
+        <h2 style="font-size:1.8rem;font-weight:700;margin-bottom:32px;">Projects</h2>
+        <div class="filter-tabs" id="filter-tabs" role="tablist" aria-label="Filter projects by platform">
+            <button class="active" data-filter="all" role="tab" aria-selected="true">All</button>
+            <button data-filter="shopify" role="tab" aria-selected="false">Shopify</button>
+            <button data-filter="webflow" role="tab" aria-selected="false">Webflow</button>
+            <button data-filter="nuxt" role="tab" aria-selected="false">NuxtJs</button>
+        </div>
+        <div class="projects-grid" id="projects-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+            <a href="https://eyda.dk" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/eyda.png" alt="Eyda - ActiveWear">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Eyda - ActiveWear</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://sainthenri.ca/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/csh.png" alt="Cafe Saint Henri">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Cafe Saint Henri</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://www.aleaprotection.com/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/alea.png" alt="Alea Protection">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Alea Protection</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://portal.arcticacres.ca/login/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/aa.png" alt="Arctic Acres">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Arctic Acres</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://www.laststoptheocean.com/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="nuxt">
+                <img loading="lazy" src="/projects/cec.png" alt="CEC">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">CEC</h3>
+                    <span class="tag-grad tag-nuxt">NuxtJs</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://shopdiva.ca/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/diva.png" alt="Diva Cup">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Diva Cup</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://learn.parl.ca/understanding-comprendre/en/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="nuxt">
+                <img loading="lazy" src="/projects/lop.png" alt="Library of Parliament">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Library of Parliament</h3>
+                    <span class="tag-grad tag-nuxt">NuxtJs</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://www.musclehouse.dk/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/musclehouse.png" alt="MuscleHouse">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">MuscleHouse</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://nordicmodern.com/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/nordic.png" alt="Nordic Modern">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Nordic Modern</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://ofelia.ca/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/ofelia.png" alt="Ofelia">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Ofelia</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://rapportlondon.com/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/rapport.png" alt="Rapport London">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Rapport London</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://www.stelton.com/en" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/stelton.png" alt="Stelton">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Stelton</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://summerbird.dk/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/summerbird.png" alt="Summerbird">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Summerbird</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://www.tristanstyle.com/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/tristan.png" alt="Tristan">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Tristan</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://fermliving.com/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/fermliving.png" alt="FermLiving">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">FermLiving</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://www.bestar.ca/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/bestar.png" alt="Bestar">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Bestar</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://www.electricmind.com/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="webflow">
+                <img loading="lazy" src="/projects/electric-mind.png" alt="Electric Mind">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Electric Mind</h3>
+                    <span class="tag-grad tag-webflow">Webflow</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://flexpay.io/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="webflow">
+                <img loading="lazy" src="/projects/flexpay.png" alt="Flexpay">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Flexpay</h3>
+                    <span class="tag-grad tag-webflow">Webflow</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://www.originslashpro.com/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/origin.png" alt="Origins Lash Pro">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Origins Lash Pro</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://philocalyhairextensions.com/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/philocaly.png" alt="Philocaly">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Philocaly</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://tromborg.dk/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/tromborg.png" alt="Tromborg">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Tromborg</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+            <a href="https://wispynutrition.com/" target="_blank" rel="noopener noreferrer" class="project-card" data-platform="shopify">
+                <img loading="lazy" src="/projects/wispy.png" alt="Wispy Nutrition">
+                <div style="padding:16px;">
+                    <h3 style="font-weight:600;margin-bottom:8px;">Wispy Nutrition</h3>
+                    <span class="tag-grad tag-shopify">Shopify</span> <span class="tag-grad tag-js">JavaScript</span>
+                </div>
+            </a>
+        </div>
+    </section>
 
-        <!-- Projects Section -->
-        <section id="projects" class="section-card p-8 rounded-xl shadow-lg mb-8 fade-in fade-in-delay-2">
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">Projects</h2>
-            <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-y-auto h-[500px]">
-                <!-- Project cards will be injected here by JavaScript -->
-            </div>
-        </section>
+    <!-- Badges -->
+    <section id="badges" class="container" style="padding:40px 24px 100px;">
+        <p class="section-label" style="color:#60a5fa;">Certifications</p>
+        <h2 style="font-size:1.8rem;font-weight:700;margin-bottom:32px;">Badges</h2>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
+            <a href="https://www.credly.com/badges/d6004a16-54a3-42e4-a955-196ba1f9f536/linked_in_profile" target="_blank" rel="noopener noreferrer" class="badge-glow" style="text-decoration:none;color:inherit;">
+                <img src="/images/Liquid Storefronts for Theme Developers.png" alt="Liquid Storefronts for Theme Developers badge" loading="lazy">
+                <p style="font-weight:600;font-size:0.9rem;">Liquid Storefronts for Theme Developers</p>
+                <p style="color:rgba(255,255,255,0.7);font-size:0.8rem;">Shopify Verified</p>
+            </a>
+            <a href="https://www.credly.com/badges/e43cb21b-ee8f-47ec-950b-e7ffab3cc53e/linked_in_profile" target="_blank" rel="noopener noreferrer" class="badge-glow" style="text-decoration:none;color:inherit;">
+                <img src="/images/Shopify Development Fundamentals- Verified Skill Badge.png" alt="Shopify Development Fundamentals badge" loading="lazy">
+                <p style="font-weight:600;font-size:0.9rem;">Shopify Development Fundamentals</p>
+                <p style="color:rgba(255,255,255,0.7);font-size:0.8rem;">Shopify Verified</p>
+            </a>
+        </div>
+    </section>
 
-        <!-- Shopify Badges Section -->
-        <section id="shopify-badges" class="section-card p-8 rounded-xl shadow-lg mb-8 fade-in fade-in-delay-3">
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">Badges</h2>
-            <div id="badges-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                <!-- Badge cards will be injected here by JavaScript -->
-            </div>
-        </section>
+    <!-- Connect -->
+    <section id="connect" class="container" style="padding:40px 24px 120px;">
+        <p class="section-label" style="color:#60a5fa;">Get in Touch</p>
+        <h2 style="font-size:1.8rem;font-weight:700;margin-bottom:32px;">Let's Connect</h2>
+        <div class="connect-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+            <a href="mailto:padronpedro@gmail.com" class="connect-card">
+                <div class="connect-icon" style="background:rgba(59,130,246,0.1);">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
+                </div>
+                <div class="connect-info">
+                    <p class="label">Email</p>
+                    <p class="handle">padronpedro@gmail.com</p>
+                </div>
+                <svg class="connect-arrow" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="https://github.com/padronpedro" target="_blank" rel="noopener noreferrer" class="connect-card">
+                <div class="connect-icon" style="background:rgba(255,255,255,0.08);">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke="#e2e8f0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+                </div>
+                <div class="connect-info">
+                    <p class="label">GitHub</p>
+                    <p class="handle">padronpedro</p>
+                </div>
+                <svg class="connect-arrow" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="https://linkedin.com/in/padronpedro" target="_blank" rel="noopener noreferrer" class="connect-card">
+                <div class="connect-icon" style="background:rgba(59,130,246,0.1);">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </div>
+                <div class="connect-info">
+                    <p class="label">LinkedIn</p>
+                    <p class="handle">padronpedro</p>
+                </div>
+                <svg class="connect-arrow" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+    </section>
 
-        <!-- Contact Section -->
-        <section id="contact" class="section-card p-8 rounded-xl shadow-lg mb-8 fade-in fade-in-delay-4">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4 text-center">Let's Connect</h2>
-            <p class="text-gray-600 mb-6 text-center">
-
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
-                <a href="mailto:padronpedro@gmail.com" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 font-medium transition-colors">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                    </svg>
-                    <span>padronpedro@gmail.com</span>
-                </a>
-                <a href="https://github.com/padronpedro" target="_blank" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 font-medium transition-colors">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.419 2.864 8.169 6.838 9.531.5.092.682-.217.682-.483 0-.237-.009-.868-.014-1.704-2.782.605-3.37-.67-3.37-.67-.454-1.156-1.11-1.464-1.11-1.464-.908-.618.069-.607.069-.607 1.004.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.644.35-1.088.636-1.338-2.222-.253-4.555-1.112-4.555-4.943 0-1.091.39-1.984 1.029-2.682-.103-.253-.446-1.27.098-2.651 0 0 .84-.27 2.75 1.025.798-.222 1.643-.333 2.502-.337.859.004 1.704.115 2.502.337 1.909-1.295 2.747-1.025 2.747-1.025.546 1.381.202 2.398.1 2.651.64.698 1.028 1.591 1.028 2.682 0 3.839-2.337 4.685-4.566 4.935.359.308.678.915.678 1.846 0 1.338-.012 2.417-.012 2.747 0 .267.18.577.688.48A10 10 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd" />
-                    </svg>
-                    <span>padronpedro</span>
-                </a>
-                <a href="https://linkedin.com/in/padronpedro" target="_blank" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 font-medium transition-colors">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14zM8 11.4v6.6H5v-6.6h3zM6.5 9.4a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM19 19V11.8c0-2.4-1.4-3.5-3.5-3.5-1.5 0-2.3 0.8-2.7 1.6V9.4H10v9.6h3v-5.2c0-1.2 0.7-1.6 1.5-1.6.8 0 1.5 0.5 1.5 1.6V19h3z"/>
-                    </svg>
-                    <span>padronpedro</span>
-                </a>
-            </div>
-        </section>
     </main>
 
-    <!-- Scroll to Top Button -->
-    <button id="scroll-to-top" class="fixed bottom-4 right-4 bg-gray-800 text-white p-3 rounded-full shadow-lg transition-opacity duration-300 opacity-0 invisible hover:bg-gray-700">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
-        </svg>
-    </button>
-
-    <!-- Footer -->
-    <footer class="text-center py-6 text-gray-500 text-sm">
-        &copy; <span id="current-year"></span> Pedro Padron. All rights reserved.
+    <footer style="text-align:center;padding:24px;color:#fff;font-size:0.8rem;border-top:1px solid rgba(255,255,255,0.05);">
+        &copy; 2026 Pedro Padron
     </footer>
 
     <script>
-        // Data for the projects
-        const projects = [
-            {
-                name: "Eyda - ActiveWear",
-                image: "/projects/eyda.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://eyda.dk"
-            },
-            {
-                name: "Cafe Saint Henri",
-                image: "/projects/csh.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://sainthenri.ca/"
-            },
-            {
-                name: "Alea Protection",
-                image: "/projects/alea.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://www.aleaprotection.com/"
-            },
-            {
-                name: "Arctic Acres",
-                image: "/projects/aa.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://portal.arcticacres.ca/login/"
-            },
-            {
-                name: "CEC",
-                image: "/projects/cec.png",
-                tags: ["NuxtJs","HTML", "CSS", "JavaScript"],
-                link: "https://www.laststoptheocean.com/"
-            },
-            {
-                name: "Diva Cup",
-                image: "/projects/diva.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://shopdiva.ca/"
-            },
-            {
-                name: "Library of Parliament",
-                image: "/projects/lop.png",
-                tags: ["NuxtJs","HTML", "CSS", "JavaScript"],
-                link: "https://learn.parl.ca/understanding-comprendre/en/"
-            },
-            {
-                name: "MuscleHouse",
-                image: "/projects/musclehouse.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://www.musclehouse.dk/"
-            },
-            {
-                name: "Nordic Modern",
-                image: "/projects/nordic.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://nordicmodern.com/"
-            },
-            {
-                name: "Ofelia",
-                image: "/projects/ofelia.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://ofelia.ca/"
-            },
-            {
-                name: "Rapport London",
-                image: "/projects/rapport.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://rapportlondon.com/"
-            },
-            {
-                name: "Stelton",
-                image: "/projects/stelton.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://www.stelton.com/en"
-            },
-            {
-                name: "Summerbird",
-                image: "/projects/summerbird.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://summerbird.dk/"
-            },
-            {
-                name: "Tristan",
-                image: "/projects/tristan.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://www.tristanstyle.com/"
-            },
-            {
-                name: "FermLiving",
-                image: "/projects/fermliving.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://fermliving.com/"
-            },
-            {
-                name: "Bestar",
-                image: "/projects/bestar.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://www.bestar.ca/"
-            },
-            {
-                name: "Electric Mind",
-                image: "/projects/electric-mind.png",
-                tags: ["Webflow", "HTML", "CSS", "JavaScript"],
-                link: "https://www.electricmind.com/"
-            },
-            {
-                name: "Flexpay",
-                image: "/projects/flexpay.png",
-                tags: ["Webflow", "HTML", "CSS", "JavaScript"],
-                link: "https://flexpay.io/"
-            },
-            {
-                name: "Origins Lash Pro",
-                image: "/projects/origin.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://www.originslashpro.com/"
-            },
-            {
-                name: "Philocaly",
-                image: "/projects/philocaly.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://philocalyhairextensions.com/"
-            },
-            {
-                name: "Super Users",
-                image: "/projects/superusers.png",
-                tags: ["HTML", "CSS", "JavaScript"],
-                link: "https://www.superusers.dk/"
-            },
-            {
-                name: "Tromborg",
-                image: "/projects/tromborg.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://tromborg.dk/"
-            },
-            {
-                name: "Wispy Nutrition",
-                image: "/projects/wispy.png",
-                tags: ["Shopify", "Liquid", "Javascript"],
-                link: "https://wispynutrition.com/"
-            },
-        ];
-
-        // Data for Shopify badges
-        const shopifyBadges = [
-            {
-                name: "Liquid Storefronts for Theme Developers",
-                icon: "/images/Liquid Storefronts for Theme Developers.png",
-            },
-            {
-                name: "Shopify Development Fundamentals",
-                icon: "/images/Shopify Development Fundamentals- Verified Skill Badge.png",
-            }
-        ];
-
-        // Get the container for projects
-        const projectsContainer = document.getElementById('projects-container');
-        // Get the container for badges
-        const badgesContainer = document.getElementById('badges-container');
-        // Get the scroll-to-top button
-        const scrollToTopButton = document.getElementById('scroll-to-top');
-
-        // Function to create a project card element
-        function createProjectCard(project) {
-            const card = document.createElement('div');
-            card.className = "project-card bg-gray-50 p-6 rounded-lg shadow-sm group cursor-pointer";
-
-            card.innerHTML = `
-                <div class="relative overflow-hidden rounded-md group">
-                    <img src="${project.image}" alt="Screenshot of ${project.name}" class="w-full h-auto rounded-md group-hover:scale-105 transition-transform duration-300">
-                </div>
-                <div class="mt-4">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">${project.name}</h3>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        ${project.tags.map(tag => `<span class="bg-gray-200 text-gray-800 text-xs font-medium px-2.5 py-1 rounded-full">${tag}</span>`).join('')}
-                    </div>
-                    <a href="${project.link}" target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors">
-                        View Project
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h6m0 0l-5 5m5-5v6"></path>
-                        </svg>
-                    </a>
-                </div>
-            `;
-            return card;
-        }
-
-        // Function to create a badge card element
-        function createBadgeCard(badge) {
-            const card = document.createElement('div');
-            card.className = "badge-card flex flex-col items-center p-4 bg-gray-50 rounded-lg shadow-sm group text-center";
-
-            card.innerHTML = `
-                <img src="${badge.icon}" alt="${badge.name} badge icon" class="w-16 h-16 sm:w-20 sm:h-20 mb-2 rounded-full group-hover:scale-105 transition-transform duration-300">
-                <span class="text-sm font-medium text-gray-900">${badge.name}</span>
-            `;
-            return card;
-        }
-
-        // Populate the projects and badges sections on page load
-        window.onload = function() {
-            projects.forEach(project => {
-                projectsContainer.appendChild(createProjectCard(project));
-            });
-
-            shopifyBadges.forEach(badge => {
-                badgesContainer.appendChild(createBadgeCard(badge));
-            });
-
-            // Set the current year in the footer
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-        };
-
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Scroll to top button functionality
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                scrollToTopButton.classList.remove('invisible', 'opacity-0');
-            } else {
-                scrollToTopButton.classList.add('invisible', 'opacity-0');
-            }
-        });
-
-        scrollToTopButton.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
+        // Filter tabs
+        const filterBtns = document.querySelectorAll('#filter-tabs button');
+        const projectCards = document.querySelectorAll('#projects-grid .project-card');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+                btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
+                const filter = btn.dataset.filter;
+                projectCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.platform === filter) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
             });
         });
     </script>
