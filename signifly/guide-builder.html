@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide Builder</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.css">
+<style>
+.ql-toolbar.ql-snow{border:none;border-bottom:1px solid #f0f0ec;padding:6px 10px;font-family:inherit}
+.ql-container.ql-snow{border:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:13px}
+.ql-editor{min-height:130px;padding:12px 16px;line-height:1.65;color:#1a1a18}
+.ql-editor.ql-blank::before{color:#d3d1c7;font-style:normal;left:16px}
+.ql-toolbar.ql-snow .ql-formats{margin-right:8px}
+.ql-snow .ql-stroke{stroke:#888780}
+.ql-snow .ql-fill{fill:#888780}
+.ql-snow.ql-toolbar button:hover .ql-stroke,.ql-snow.ql-toolbar button.ql-active .ql-stroke{stroke:#1a1a18}
+.ql-snow.ql-toolbar button:hover .ql-fill,.ql-snow.ql-toolbar button.ql-active .ql-fill{fill:#1a1a18}
+.ql-snow.ql-toolbar button:hover,.ql-snow.ql-toolbar button.ql-active{color:#1a1a18}
+.ql-snow.ql-toolbar button{border-radius:4px;padding:2px 4px}
+.ql-snow.ql-toolbar button:hover{background:#f0f0ec}
+.ql-editor ul,.ql-editor ol{padding-left:1.2em}
+.ql-editor p{margin:0 0 2px}
+.ql-editor li{padding-left:0.3em}
+</style>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#f5f5f3;color:#1a1a18;min-height:100vh}
+
+header{background:#fff;border-bottom:1px solid #e5e5e0;padding:0 20px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.logo{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:600;letter-spacing:-.01em}
+.logo-dot{width:26px;height:26px;background:#1a1a18;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700}
+.header-actions{display:flex;gap:6px;align-items:center}
+.divider{width:1px;height:20px;background:#e5e5e0;margin:0 4px}
+
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid #e5e5e0;background:#fff;color:#1a1a18;transition:background .12s,border-color .12s;font-family:inherit;white-space:nowrap}
+.btn:hover{background:#f5f5f3;border-color:#d3d1c7}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.primary{background:#1a1a18;color:#fff;border-color:#1a1a18}
+.btn.primary:hover{background:#333}
+.btn.primary:disabled{opacity:.35}
+.btn.ghost{border-color:transparent;background:transparent}
+.btn.ghost:hover{background:#f0f0ec;border-color:transparent}
+
+.main{max-width:780px;margin:0 auto;padding:28px 24px 110px}
+
+.empty{text-align:center;padding:64px 24px}
+.empty-icon{width:56px;height:56px;border-radius:14px;background:#f0f0ec;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px}
+.empty h2{font-size:17px;font-weight:600;margin-bottom:8px}
+.empty p{font-size:13px;color:#888780;line-height:1.65;max-width:280px;margin:0 auto 20px}
+
+.steps{display:flex;flex-direction:column;gap:12px}
+
+.card{background:#fff;border:1px solid #e5e5e0;border-radius:12px;overflow:hidden;transition:box-shadow .18s,border-color .18s}
+.card:focus-within{border-color:#b4b2a9;box-shadow:0 0 0 3px rgba(0,0,0,.06)}
+
+.card-head{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0f0ec}
+.badge{width:26px;height:26px;border-radius:50%;background:#1a1a18;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.title-input{flex:1;border:none;background:transparent;font-size:14px;font-weight:500;color:#1a1a18;outline:none;font-family:inherit}
+.title-input::placeholder{color:#c4c2b9;font-weight:400}
+.card-acts{display:flex;gap:1px;margin-left:auto}
+.ic{width:27px;height:27px;border-radius:6px;border:none;background:transparent;color:#c4c2b9;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .1s,color .1s;line-height:1}
+.ic:hover{background:#f0f0ec;color:#1a1a18}
+.ic.del:hover{background:#FCEBEB;color:#A32D2D}
+
+.card-body{display:grid;grid-template-columns:1fr 1fr}
+
+.zone{border-right:1px solid #f0f0ec;padding:16px;min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:background .12s;gap:0}
+.zone:hover:not(.has-img){background:#fafaf8}
+.zone.drag-over{background:#f0f0ec !important}
+.zone.active-zone{outline:2px solid #1a1a18;outline-offset:-2px}
+.zone-placeholder{text-align:center;color:#c4c2b9;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:6px}
+.zone-placeholder .zi{font-size:30px;color:#ddd}
+.zone-placeholder p{font-size:12px;line-height:1.5;max-width:130px}
+kbd{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;background:#f5f5f3;border:1px solid #e0e0da;color:#888780;font-family:inherit}
+.zone-img{width:100%;max-height:200px;object-fit:contain;display:none;border-radius:4px}
+.img-acts{position:absolute;top:8px;right:8px;display:none;gap:4px}
+.img-acts button{background:#fff;border:1px solid #e5e5e0;border-radius:6px;width:26px;height:26px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#888780;transition:background .1s}
+.img-acts button:hover{background:#f0f0ec;color:#1a1a18}
+
+.desc-side{display:flex;flex-direction:column;min-height:190px}
+
+input[type=file]{display:none}
+
+.bottom{position:fixed;bottom:0;left:0;right:0;padding:11px 20px;background:#fff;border-top:1px solid #e5e5e0;display:none;justify-content:space-between;align-items:center;gap:12px;z-index:90}
+.step-count{font-size:13px;color:#888780}
+
+.toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:#1a1a18;color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;pointer-events:none;opacity:0;transition:opacity .18s;white-space:nowrap;z-index:999}
+.toast.show{opacity:1}
+
+.overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,.9);z-index:500;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.overlay.show{display:flex}
+.spinner{width:32px;height:32px;border:2.5px solid #e5e5e0;border-top-color:#1a1a18;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.overlay p{font-size:13px;color:#888780}
+
+.cover-card{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:16px 18px;margin-bottom:18px;display:flex;gap:16px;align-items:center}
+.cover-preview{flex-shrink:0;width:110px;height:44px;display:flex;align-items:center}
+.cover-preview svg{width:100%;height:100%;object-fit:contain}
+.cover-fields{flex:1;min-width:0}
+.cover-fields label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#b4b2a9;display:block;margin-bottom:5px}
+.guide-title-input{width:100%;border:1px solid #e5e5e0;border-radius:7px;padding:8px 12px;font-size:14px;font-weight:500;color:#1a1a18;font-family:inherit;outline:none;background:#fff;transition:border-color .12s}
+.guide-title-input:focus{border-color:#b4b2a9;box-shadow:0 0 0 3px rgba(0,0,0,.05)}
+.guide-title-input::placeholder{font-weight:400;color:#c4c2b9}
+.cover-hint{font-size:11px;color:#c4c2b9;margin-top:5px}
+
+.orient-toggle{display:flex;gap:0;border:1px solid #e5e5e0;border-radius:7px;overflow:hidden;flex-shrink:0}
+.orient-btn{padding:7px 13px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:#fff;color:#888780;font-family:inherit;transition:background .12s,color .12s;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.orient-btn:first-child{border-right:1px solid #e5e5e0}
+.orient-btn.active{background:#1a1a18;color:#fff}
+.orient-icon{display:inline-block;border:1.5px solid currentColor;border-radius:1px}
+.orient-icon.portrait{width:8px;height:11px}
+.orient-icon.landscape{width:11px;height:8px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot">✦</div>
+    Guide Builder
+  </div>
+  <div class="header-actions">
+    <button class="btn ghost" onclick="triggerImport()" title="Import a .guide.json file">↑ Import</button>
+    <button class="btn ghost" id="exportBtn" onclick="exportSteps()" disabled title="Export steps as shareable .guide.json">↓ Export</button>
+    <div class="divider"></div>
+    <button class="btn" onclick="addStep()">+ Add Step</button>
+    <button class="btn primary" id="pdfBtn" onclick="generatePDF()" disabled>↓ Export PDF</button>
+  </div>
+</header>
+
+<div class="main">
+
+  <div class="cover-card">
+    <div class="cover-preview">
+      <svg id="logoSvg" xmlns="http://www.w3.org/2000/svg" width="287" height="113" viewBox="0 0 287 113" fill="none" style="width:100%;height:100%;object-fit:contain"><path d="M35.411 30.2966C38.277 31.4416 40.6654 32.9683 42.5283 34.8289C44.3912 36.6895 45.8242 38.8364 46.7318 41.1741C47.6393 43.5595 48.117 45.8973 48.117 48.235H36.7007C36.7007 45.6587 35.6976 43.5118 33.6436 41.7466C31.5897 40.0291 28.7714 39.1704 25.1411 39.1704C23.6604 39.1704 22.1796 39.3135 20.7943 39.5998C19.3613 39.886 18.1194 40.3154 17.0208 40.8879C15.9221 41.4604 15.0623 42.176 14.4414 43.0348C13.8204 43.8935 13.486 44.8954 13.486 46.0404C13.486 48.0919 14.5369 49.6662 16.6386 50.6681C18.7404 51.67 22.0841 52.6241 26.7174 53.5783C30.3 54.2939 33.5003 55.0573 36.3664 55.9637C39.2324 56.8702 41.6685 58.0152 43.6747 59.3988C45.6809 60.7823 47.2572 62.4998 48.3558 64.599C49.4545 66.6504 49.9799 69.2267 49.9799 72.28C49.9799 75.1425 49.4067 77.7665 48.2603 80.1042C47.1139 82.4419 45.4421 84.4457 43.2925 86.0678C41.143 87.6898 38.5159 88.9303 35.4588 89.8367C32.4017 90.6955 28.9625 91.1249 25.1889 91.1249C22.2274 91.1249 19.3136 90.6955 16.352 89.8367C13.3905 89.0257 10.7633 87.6898 8.42272 85.9723C6.08215 84.2548 4.21924 82.0603 2.78623 79.4363C1.35322 76.8123 0.636719 73.6636 0.636719 70.0377H12.0052C12.0052 71.8506 12.4351 73.3773 13.1994 74.6655C14.0114 75.9536 15.0623 77.0509 16.3043 77.9096C17.5462 78.7684 18.9792 79.4363 20.5555 79.8657C22.1318 80.295 23.6604 80.5336 25.1411 80.5336C26.7652 80.5336 28.3893 80.3905 29.9656 80.1042C31.5897 79.818 33.0227 79.3409 34.3124 78.673C35.6021 78.005 36.6052 77.194 37.3695 76.1921C38.1337 75.1902 38.5159 73.9498 38.5159 72.5186C38.5159 71.6121 38.3248 70.7534 37.8471 69.9423C37.4172 69.1313 36.653 68.4156 35.5543 67.7477C34.4557 67.0798 32.9749 66.4596 31.2075 65.8871C29.3924 65.3146 27.0996 64.7421 24.3291 64.265C21.5586 63.7402 18.8359 63.12 16.161 62.309C13.486 61.5456 11.0977 60.4483 9.04369 59.1125C6.94195 57.7767 5.27011 56.0592 3.9804 53.96C2.69069 51.8608 2.02196 49.2369 2.02196 45.9927C2.02196 43.4164 2.5474 41.031 3.64603 38.9318C4.74467 36.8327 6.27321 34.972 8.32719 33.4454C10.3334 31.9187 12.7695 30.726 15.5878 29.8672C18.406 29.0085 21.6064 28.5791 25.0934 28.5791C29.1058 28.5791 32.545 29.1993 35.411 30.2966Z" fill="black"/><path d="M68.553 45.944H57.1367V90.4082H68.553V45.944Z" fill="black"/><path d="M120.479 88.1178C120.479 91.7913 119.954 95.1309 118.903 98.0889C117.852 101.047 116.324 103.575 114.318 105.674C112.311 107.726 109.923 109.348 107.057 110.493C104.191 111.59 100.991 112.163 97.408 112.163C94.7808 112.163 92.2492 111.781 89.8131 111.066C87.377 110.302 85.2275 109.253 83.269 107.917C81.3584 106.581 79.6865 104.911 78.3968 103.051C77.0593 101.19 76.1995 99.043 75.8174 96.6576H88.3323C88.6667 97.5164 89.2399 98.2797 89.9086 98.8999C90.6251 99.5201 91.4372 100.045 92.2492 100.474C93.109 100.856 93.9688 101.19 94.8286 101.333C95.7362 101.524 96.5482 101.572 97.3603 101.572C101.42 101.572 104.334 100.379 106.197 97.9457C108.108 95.5126 109.015 92.3161 109.015 88.3563V86.2095C107.296 87.8792 105.29 89.1674 103.092 90.0738C100.895 90.9803 98.4589 91.4097 95.8795 91.4097C93.0135 91.4097 90.243 90.8372 87.7113 89.6445C85.1319 88.4518 82.8869 86.8297 80.9762 84.7782C79.0655 82.679 77.537 80.2459 76.3906 77.4311C75.292 74.6163 74.7188 71.563 74.7188 68.2711C74.7188 64.9792 75.292 61.9259 76.3906 59.0634C77.537 56.2009 79.0655 53.72 80.9762 51.6686C82.9347 49.6171 85.1797 47.995 87.7113 46.8023C90.2908 45.6096 93.0135 45.0371 95.8795 45.0371C98.65 45.0371 101.134 45.5142 103.427 46.5161C105.719 47.5179 107.726 48.9015 109.541 50.7621V45.9913H120.432V88.1178H120.479ZM108.203 63.2617C107.582 61.7351 106.77 60.3515 105.719 59.2065C104.669 58.0615 103.474 57.155 102.089 56.4871C100.704 55.8192 99.2232 55.4852 97.6468 55.4852C96.0705 55.4852 94.5898 55.8192 93.2045 56.4871C91.8193 57.155 90.5774 58.0138 89.5743 59.1588C88.5234 60.2561 87.7114 61.6396 87.0904 63.214C86.5172 64.7884 86.1828 66.4582 86.1828 68.2234C86.1828 69.9886 86.4694 71.6584 87.0904 73.1851C87.7114 74.7117 88.5234 75.9999 89.5743 77.1449C90.6251 78.2899 91.8193 79.1486 93.2045 79.7688C94.5898 80.389 96.0705 80.723 97.6468 80.723C99.2232 80.723 100.704 80.389 102.089 79.7211C103.474 79.0532 104.669 78.1945 105.719 77.0494C106.77 75.9522 107.582 74.6163 108.203 73.0896C108.824 71.563 109.111 69.9409 109.111 68.2234C109.111 66.4582 108.777 64.7884 108.203 63.2617Z" fill="black"/><path d="M169.062 90.4079H157.646V64.4068C157.646 63.7866 157.551 62.9279 157.359 61.926C157.168 60.9241 156.834 59.9222 156.309 59.0158C155.783 58.0616 154.923 57.2506 153.872 56.5826C152.774 55.9147 151.245 55.5808 149.382 55.5808C146.803 55.5808 144.701 56.3918 143.125 58.0616C141.549 59.7314 140.737 61.8306 140.737 64.3591V90.3602H129.32V46.0868H140.211V50.3805C141.644 48.7108 143.316 47.3749 145.227 46.4207C147.137 45.4666 149.287 44.9418 151.723 44.9418C154.302 44.9418 156.691 45.4189 158.84 46.373C160.99 47.3272 162.805 48.6153 164.333 50.3328C165.814 52.0026 167.008 54.0541 167.82 56.4872C168.68 58.9204 169.062 61.5443 169.062 64.5022V90.4079Z" fill="black"/><path d="M188.51 45.944H177.094V90.4082H188.51V45.944Z" fill="black"/><path d="M218.59 46.0856V56.1998H210.565V90.4067H199.149V56.1998H193.799V46.0856H199.149C199.196 43.2231 199.674 40.5514 200.534 38.1183C201.394 35.6852 202.683 33.586 204.403 31.9162C206.075 30.1987 208.177 28.9583 210.613 28.1472C213.049 27.3362 215.867 27.0977 219.068 27.4793V38.166C216.297 37.9275 214.195 38.4046 212.762 39.645C211.329 40.8377 210.613 43.0323 210.613 46.1333H218.59V46.0856Z" fill="black"/><path d="M236.651 90.4064H225.234V26.9065H236.651V90.4064Z" fill="black"/><path d="M267.32 98.5186C266.221 101.381 264.979 103.671 263.594 105.436C262.209 107.154 260.68 108.49 258.961 109.396C257.241 110.255 255.378 110.827 253.324 111.018C251.27 111.209 249.121 111.209 246.78 111.066V100.713C248.213 100.809 249.455 100.809 250.554 100.618C251.605 100.475 252.56 100.141 253.372 99.6636C254.184 99.1866 254.9 98.5663 255.474 97.7076C256.095 96.8966 256.62 95.847 257.098 94.5588L258.387 91.1716L241.191 45.944H253.276L264.167 78.0517L274.819 45.944H287L267.32 98.5186Z" fill="black"/><path d="M189.361 6.72688C189.361 10.4481 186.352 13.4538 182.626 13.4538C178.9 13.4538 175.891 10.4481 175.891 6.72688C175.891 3.00562 178.9 0 182.626 0C186.352 0 189.361 3.00562 189.361 6.72688Z" fill="black"/></svg>
+    </div>
+    <div class="cover-fields">
+      <label for="guideTitle">Cover page title</label>
+      <input class="guide-title-input" id="guideTitle" type="text" placeholder="e.g. How to update the navigation menu in Webflow" />
+      <p class="cover-hint">Appears on the PDF cover page alongside your logo</p>
+    </div>
+    <div class="orient-toggle">
+      <button class="orient-btn active" id="btnPortrait" onclick="setOrientation('portrait')">
+        <span class="orient-icon portrait"></span> Portrait
+      </button>
+      <button class="orient-btn" id="btnLandscape" onclick="setOrientation('landscape')">
+        <span class="orient-icon landscape"></span> Landscape
+      </button>
+    </div>
+  </div>
+
+  <div id="emptyState" class="empty">
+    <div class="empty-icon">📸</div>
+    <h2>Add your first step</h2>
+    <p>Paste screenshots, write descriptions, then export as PDF — or import a saved guide to continue editing.</p>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button class="btn primary" onclick="addStep()">+ Add your first step</button>
+      <button class="btn" onclick="triggerImport()">↑ Import guide</button>
+    </div>
+  </div>
+
+  <div id="stepsList" class="steps"></div>
+
+</div>
+
+<div class="bottom" id="bottomBar">
+  <span class="step-count" id="stepCount">0 steps</span>
+  <div style="display:flex;gap:6px;align-items:center">
+    <button class="btn ghost" onclick="triggerImport()">↑ Import</button>
+    <button class="btn ghost" onclick="exportSteps()">↓ Export</button>
+    <div class="divider"></div>
+    <button class="btn" onclick="addStep()">+ Add Step</button>
+    <button class="btn primary" onclick="generatePDF()">↓ PDF</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="overlay" id="overlay">
+  <div class="spinner"></div>
+  <p id="overlayMsg">Generating your PDF…</p>
+</div>
+
+<input type="file" id="importFile" accept=".json" onchange="handleImport(event)" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="287" height="113" viewBox="0 0 287 113" fill="none"><path d="M35.411 30.2966C38.277 31.4416 40.6654 32.9683 42.5283 34.8289C44.3912 36.6895 45.8242 38.8364 46.7318 41.1741C47.6393 43.5595 48.117 45.8973 48.117 48.235H36.7007C36.7007 45.6587 35.6976 43.5118 33.6436 41.7466C31.5897 40.0291 28.7714 39.1704 25.1411 39.1704C23.6604 39.1704 22.1796 39.3135 20.7943 39.5998C19.3613 39.886 18.1194 40.3154 17.0208 40.8879C15.9221 41.4604 15.0623 42.176 14.4414 43.0348C13.8204 43.8935 13.486 44.8954 13.486 46.0404C13.486 48.0919 14.5369 49.6662 16.6386 50.6681C18.7404 51.67 22.0841 52.6241 26.7174 53.5783C30.3 54.2939 33.5003 55.0573 36.3664 55.9637C39.2324 56.8702 41.6685 58.0152 43.6747 59.3988C45.6809 60.7823 47.2572 62.4998 48.3558 64.599C49.4545 66.6504 49.9799 69.2267 49.9799 72.28C49.9799 75.1425 49.4067 77.7665 48.2603 80.1042C47.1139 82.4419 45.4421 84.4457 43.2925 86.0678C41.143 87.6898 38.5159 88.9303 35.4588 89.8367C32.4017 90.6955 28.9625 91.1249 25.1889 91.1249C22.2274 91.1249 19.3136 90.6955 16.352 89.8367C13.3905 89.0257 10.7633 87.6898 8.42272 85.9723C6.08215 84.2548 4.21924 82.0603 2.78623 79.4363C1.35322 76.8123 0.636719 73.6636 0.636719 70.0377H12.0052C12.0052 71.8506 12.4351 73.3773 13.1994 74.6655C14.0114 75.9536 15.0623 77.0509 16.3043 77.9096C17.5462 78.7684 18.9792 79.4363 20.5555 79.8657C22.1318 80.295 23.6604 80.5336 25.1411 80.5336C26.7652 80.5336 28.3893 80.3905 29.9656 80.1042C31.5897 79.818 33.0227 79.3409 34.3124 78.673C35.6021 78.005 36.6052 77.194 37.3695 76.1921C38.1337 75.1902 38.5159 73.9498 38.5159 72.5186C38.5159 71.6121 38.3248 70.7534 37.8471 69.9423C37.4172 69.1313 36.653 68.4156 35.5543 67.7477C34.4557 67.0798 32.9749 66.4596 31.2075 65.8871C29.3924 65.3146 27.0996 64.7421 24.3291 64.265C21.5586 63.7402 18.8359 63.12 16.161 62.309C13.486 61.5456 11.0977 60.4483 9.04369 59.1125C6.94195 57.7767 5.27011 56.0592 3.9804 53.96C2.69069 51.8608 2.02196 49.2369 2.02196 45.9927C2.02196 43.4164 2.5474 41.031 3.64603 38.9318C4.74467 36.8327 6.27321 34.972 8.32719 33.4454C10.3334 31.9187 12.7695 30.726 15.5878 29.8672C18.406 29.0085 21.6064 28.5791 25.0934 28.5791C29.1058 28.5791 32.545 29.1993 35.411 30.2966Z" fill="black"/><path d="M68.553 45.944H57.1367V90.4082H68.553V45.944Z" fill="black"/><path d="M120.479 88.1178C120.479 91.7913 119.954 95.1309 118.903 98.0889C117.852 101.047 116.324 103.575 114.318 105.674C112.311 107.726 109.923 109.348 107.057 110.493C104.191 111.59 100.991 112.163 97.408 112.163C94.7808 112.163 92.2492 111.781 89.8131 111.066C87.377 110.302 85.2275 109.253 83.269 107.917C81.3584 106.581 79.6865 104.911 78.3968 103.051C77.0593 101.19 76.1995 99.043 75.8174 96.6576H88.3323C88.6667 97.5164 89.2399 98.2797 89.9086 98.8999C90.6251 99.5201 91.4372 100.045 92.2492 100.474C93.109 100.856 93.9688 101.19 94.8286 101.333C95.7362 101.524 96.5482 101.572 97.3603 101.572C101.42 101.572 104.334 100.379 106.197 97.9457C108.108 95.5126 109.015 92.3161 109.015 88.3563V86.2095C107.296 87.8792 105.29 89.1674 103.092 90.0738C100.895 90.9803 98.4589 91.4097 95.8795 91.4097C93.0135 91.4097 90.243 90.8372 87.7113 89.6445C85.1319 88.4518 82.8869 86.8297 80.9762 84.7782C79.0655 82.679 77.537 80.2459 76.3906 77.4311C75.292 74.6163 74.7188 71.563 74.7188 68.2711C74.7188 64.9792 75.292 61.9259 76.3906 59.0634C77.537 56.2009 79.0655 53.72 80.9762 51.6686C82.9347 49.6171 85.1797 47.995 87.7113 46.8023C90.2908 45.6096 93.0135 45.0371 95.8795 45.0371C98.65 45.0371 101.134 45.5142 103.427 46.5161C105.719 47.5179 107.726 48.9015 109.541 50.7621V45.9913H120.432V88.1178H120.479ZM108.203 63.2617C107.582 61.7351 106.77 60.3515 105.719 59.2065C104.669 58.0615 103.474 57.155 102.089 56.4871C100.704 55.8192 99.2232 55.4852 97.6468 55.4852C96.0705 55.4852 94.5898 55.8192 93.2045 56.4871C91.8193 57.155 90.5774 58.0138 89.5743 59.1588C88.5234 60.2561 87.7114 61.6396 87.0904 63.214C86.5172 64.7884 86.1828 66.4582 86.1828 68.2234C86.1828 69.9886 86.4694 71.6584 87.0904 73.1851C87.7114 74.7117 88.5234 75.9999 89.5743 77.1449C90.6251 78.2899 91.8193 79.1486 93.2045 79.7688C94.5898 80.389 96.0705 80.723 97.6468 80.723C99.2232 80.723 100.704 80.389 102.089 79.7211C103.474 79.0532 104.669 78.1945 105.719 77.0494C106.77 75.9522 107.582 74.6163 108.203 73.0896C108.824 71.563 109.111 69.9409 109.111 68.2234C109.111 66.4582 108.777 64.7884 108.203 63.2617Z" fill="black"/><path d="M169.062 90.4079H157.646V64.4068C157.646 63.7866 157.551 62.9279 157.359 61.926C157.168 60.9241 156.834 59.9222 156.309 59.0158C155.783 58.0616 154.923 57.2506 153.872 56.5826C152.774 55.9147 151.245 55.5808 149.382 55.5808C146.803 55.5808 144.701 56.3918 143.125 58.0616C141.549 59.7314 140.737 61.8306 140.737 64.3591V90.3602H129.32V46.0868H140.211V50.3805C141.644 48.7108 143.316 47.3749 145.227 46.4207C147.137 45.4666 149.287 44.9418 151.723 44.9418C154.302 44.9418 156.691 45.4189 158.84 46.373C160.99 47.3272 162.805 48.6153 164.333 50.3328C165.814 52.0026 167.008 54.0541 167.82 56.4872C168.68 58.9204 169.062 61.5443 169.062 64.5022V90.4079Z" fill="black"/><path d="M188.51 45.944H177.094V90.4082H188.51V45.944Z" fill="black"/><path d="M218.59 46.0856V56.1998H210.565V90.4067H199.149V56.1998H193.799V46.0856H199.149C199.196 43.2231 199.674 40.5514 200.534 38.1183C201.394 35.6852 202.683 33.586 204.403 31.9162C206.075 30.1987 208.177 28.9583 210.613 28.1472C213.049 27.3362 215.867 27.0977 219.068 27.4793V38.166C216.297 37.9275 214.195 38.4046 212.762 39.645C211.329 40.8377 210.613 43.0323 210.613 46.1333H218.59V46.0856Z" fill="black"/><path d="M236.651 90.4064H225.234V26.9065H236.651V90.4064Z" fill="black"/><path d="M267.32 98.5186C266.221 101.381 264.979 103.671 263.594 105.436C262.209 107.154 260.68 108.49 258.961 109.396C257.241 110.255 255.378 110.827 253.324 111.018C251.27 111.209 249.121 111.209 246.78 111.066V100.713C248.213 100.809 249.455 100.809 250.554 100.618C251.605 100.475 252.56 100.141 253.372 99.6636C254.184 99.1866 254.9 98.5663 255.474 97.7076C256.095 96.8966 256.62 95.847 257.098 94.5588L258.387 91.1716L241.191 45.944H253.276L264.167 78.0517L274.819 45.944H287L267.32 98.5186Z" fill="black"/><path d="M189.361 6.72688C189.361 10.4481 186.352 13.4538 182.626 13.4538C178.9 13.4538 175.891 10.4481 175.891 6.72688C175.891 3.00562 178.9 0 182.626 0C186.352 0 189.361 3.00562 189.361 6.72688Z" fill="black"/></svg>`;
+
+async function svgToPng(svgStr, w, h) {
+  return new Promise(resolve => {
+    const blob = new Blob([svgStr], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL('image/png'));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(null); };
+    img.src = url;
+  });
+}
+
+let steps = [], idC = 0, activeZone = null, quillInstances = {}, orientation = 'portrait';
+const $ = id => document.getElementById(id);
+function uid() { return ++idC; }
+
+function setOrientation(o) {
+  orientation = o;
+  $('btnPortrait').classList.toggle('active', o === 'portrait');
+  $('btnLandscape').classList.toggle('active', o === 'landscape');
+}
+
+function toast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+function updateUI() {
+  const has = steps.length > 0;
+  $('emptyState').style.display = has ? 'none' : 'block';
+  $('bottomBar').style.display = has ? 'flex' : 'none';
+  $('stepCount').textContent = `${steps.length} step${steps.length !== 1 ? 's' : ''}`;
+  $('pdfBtn').disabled = !has;
+  $('exportBtn').disabled = !has;
+}
+
+function addStep() {
+  const step = { id: uid(), title: '', description: '', img: null };
+  steps.push(step);
+  appendCard(step);
+  updateUI();
+  setTimeout(() => { const el = $(`step-${step.id}`); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 60);
+}
+
+function appendCard(step) {
+  const idx = steps.indexOf(step) + 1;
+  const div = document.createElement('div');
+  div.className = 'card';
+  div.id = `step-${step.id}`;
+  div.innerHTML = cardHTML(step, idx);
+  $('stepsList').appendChild(div);
+  initQuill(step);
+  if (step.img) {
+    $(`img-${step.id}`).src = step.img;
+    $(`img-${step.id}`).style.display = 'block';
+    $(`ph-${step.id}`).style.display = 'none';
+    $(`acts-${step.id}`).style.display = 'flex';
+    $(`zone-${step.id}`).style.cursor = 'default';
+  }
+}
+
+function cardHTML(step, idx) {
+  return `
+    <div class="card-head">
+      <div class="badge" id="badge-${step.id}">${idx}</div>
+      <input class="title-input" type="text" placeholder="Step title (optional)"
+        value="${esc(step.title)}" oninput="steps.find(s=>s.id===${step.id}).title=this.value" />
+      <div class="card-acts">
+        <button class="ic" onclick="move(${step.id},-1)" title="Move up">↑</button>
+        <button class="ic" onclick="move(${step.id},1)" title="Move down">↓</button>
+        <button class="ic del" onclick="del(${step.id})" title="Delete">✕</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="zone" id="zone-${step.id}"
+        onclick="focusZone(${step.id})"
+        ondragover="dragOver(event,${step.id})"
+        ondragleave="dragLeave(${step.id})"
+        ondrop="drop(event,${step.id})">
+        <div class="zone-placeholder" id="ph-${step.id}">
+          <div class="zi">🖼️</div>
+          <p>Click here then paste your screenshot</p>
+          <kbd>Ctrl+V / ⌘V</kbd>
+          <p style="font-size:11px;margin-top:2px">or drag & drop</p>
+        </div>
+        <img class="zone-img" id="img-${step.id}" />
+        <div class="img-acts" id="acts-${step.id}">
+          <button onclick="clearImg(event,${step.id})" title="Remove">✕</button>
+          <button onclick="$('file-${step.id}').click()" title="Replace">⟳</button>
+        </div>
+      </div>
+      <div class="desc-side">
+        <div id="editor-${step.id}"></div>
+      </div>
+    </div>
+    <input type="file" id="file-${step.id}" accept="image/*" onchange="fromFile(event,${step.id})" />`;
+}
+
+function rebuildAll() { quillInstances = {}; $('stepsList').innerHTML = ''; steps.forEach(s => appendCard(s)); updateUI(); }
+function esc(s) { return (s||'').replace(/"/g,'&quot;'); }
+function esc2(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function focusZone(id) {
+  activeZone = id;
+  document.querySelectorAll('.zone').forEach(z => z.classList.remove('active-zone'));
+  const zone = $(`zone-${id}`);
+  if (zone) { zone.classList.add('active-zone'); toast('Zone selected — paste (Ctrl+V / ⌘V)'); }
+}
+
+function dragOver(e, id) { e.preventDefault(); $(`zone-${id}`).classList.add('drag-over'); activeZone = id; }
+function dragLeave(id) { $(`zone-${id}`).classList.remove('drag-over'); }
+function drop(e, id) {
+  e.preventDefault();
+  $(`zone-${id}`).classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) readFile(file, id);
+}
+function fromFile(e, id) { const f = e.target.files[0]; if (f) readFile(f, id); }
+function readFile(file, id) { const r = new FileReader(); r.onload = ev => setImg(id, ev.target.result); r.readAsDataURL(file); }
+
+function setImg(id, data) {
+  const step = steps.find(s => s.id === id);
+  if (!step) return;
+  step.img = data;
+  $(`img-${id}`).src = data;
+  $(`img-${id}`).style.display = 'block';
+  $(`ph-${id}`).style.display = 'none';
+  $(`acts-${id}`).style.display = 'flex';
+  $(`zone-${id}`).style.cursor = 'default';
+  $(`zone-${id}`).classList.remove('active-zone');
+  activeZone = null;
+}
+
+function clearImg(e, id) {
+  e.stopPropagation();
+  const step = steps.find(s => s.id === id);
+  if (!step) return;
+  step.img = null;
+  $(`img-${id}`).src = '';
+  $(`img-${id}`).style.display = 'none';
+  $(`ph-${id}`).style.display = 'flex';
+  $(`acts-${id}`).style.display = 'none';
+  $(`zone-${id}`).style.cursor = 'pointer';
+  $(`file-${id}`).value = '';
+}
+
+function del(id) { delete quillInstances[id]; steps = steps.filter(s => s.id !== id); rebuildAll(); }
+function move(id, dir) {
+  const i = steps.findIndex(s => s.id === id), ni = i + dir;
+  if (ni < 0 || ni >= steps.length) return;
+  [steps[i], steps[ni]] = [steps[ni], steps[i]];
+  rebuildAll();
+}
+
+document.addEventListener('paste', e => {
+  if (!activeZone) return;
+  for (const item of (e.clipboardData?.items || []))
+    if (item.type.startsWith('image/')) { const f = item.getAsFile(); if (f) { readFile(f, activeZone); break; } }
+});
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.zone') && !e.target.closest('.ic')) {
+    activeZone = null;
+    document.querySelectorAll('.zone').forEach(z => z.classList.remove('active-zone'));
+  }
+});
+
+// Drag a .json file onto the page to import
+document.addEventListener('dragover', e => { if ([...e.dataTransfer.types].includes('Files')) e.preventDefault(); });
+document.addEventListener('drop', e => {
+  const file = [...e.dataTransfer.files].find(f => f.name.endsWith('.json'));
+  if (file) { e.preventDefault(); parseImportFile(file); }
+});
+
+
+function initQuill(step) {
+  const container = document.getElementById(`editor-${step.id}`);
+  if (!container) return;
+  const q = new Quill(container, {
+    theme: 'snow',
+    placeholder: 'Describe what to do in this step…',
+    modules: {
+      toolbar: [
+        ['bold', 'italic', 'underline'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['clean']
+      ]
+    }
+  });
+  if (step.description) q.clipboard.dangerouslyPasteHTML(step.description);
+  q.on('text-change', () => {
+    const s = steps.find(x => x.id === step.id);
+    if (s) s.description = q.root.innerHTML === '<p><br></p>' ? '' : q.root.innerHTML;
+  });
+  quillInstances[step.id] = q;
+}
+
+function renderRichText(doc, html, x, startY, maxW, fontSize) {
+  if (!html || !html.replace(/<[^>]+>/g, '').trim()) return startY;
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  const lh = fontSize * 0.352778 * 1.7;
+  let y = startY;
+
+  function getSegs(node) {
+    const segs = [];
+    (function walk(n, b, i) {
+      if (n.nodeType === 3) {
+        if (n.textContent) segs.push({ t: n.textContent, b, i });
+      } else if (n.nodeType === 1) {
+        const tag = n.tagName;
+        n.childNodes.forEach(c => walk(c, b || tag === 'STRONG' || tag === 'B', i || tag === 'EM' || tag === 'I'));
+      }
+    })(node, false, false);
+    return segs;
+  }
+
+  function renderBlock(node, prefix) {
+    const segs = getSegs(node);
+    let cx = x;
+    let prefixW = 0;
+
+    if (prefix) {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(fontSize);
+      doc.text(prefix, cx, y, { baseline: 'top' });
+      prefixW = doc.getTextWidth(prefix + ' ');
+      cx += prefixW;
+    }
+
+    for (const seg of segs) {
+      const style = seg.b && seg.i ? 'bolditalic' : seg.b ? 'bold' : seg.i ? 'italic' : 'normal';
+      doc.setFont('helvetica', style);
+      doc.setFontSize(fontSize);
+      const tokens = seg.t.match(/\S+\s*/g) || [];
+      for (const tok of tokens) {
+        const tw = doc.getTextWidth(tok);
+        if (cx + tw > x + maxW && cx > x + prefixW) {
+          y += lh;
+          cx = x + prefixW;
+          doc.setFont('helvetica', style);
+        }
+        doc.text(tok, cx, y, { baseline: 'top' });
+        cx += tw;
+      }
+    }
+    y += lh;
+  }
+
+  for (const node of div.childNodes) {
+    if (node.nodeType !== 1) continue;
+    const tag = node.tagName;
+    if (tag === 'P') {
+      if (node.textContent.trim()) renderBlock(node, null);
+      else y += lh * 0.4;
+    } else if (tag === 'UL') {
+      for (const li of node.children) renderBlock(li, '•');
+    } else if (tag === 'OL') {
+      let n = 1;
+      for (const li of node.children) renderBlock(li, `${n++}.`);
+    }
+  }
+  return y;
+}
+
+// ── Export ──
+function exportSteps() {
+  if (!steps.length) return;
+  const payload = {
+    version: 1,
+    title: $('guideTitle').value.trim(),
+    exportedAt: new Date().toISOString(),
+    steps: steps.map(s => ({ title: s.title, description: s.description, img: s.img }))
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const slug = (payload.title || 'guide').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') || 'guide';
+  a.href = url; a.download = `${slug}.guide.json`; a.click();
+  URL.revokeObjectURL(url);
+  toast('Guide exported ✓');
+}
+
+// ── Import ──
+function triggerImport() { $('importFile').click(); }
+function handleImport(e) { const f = e.target.files[0]; if (f) parseImportFile(f); e.target.value = ''; }
+
+function parseImportFile(file) {
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!data.steps || !Array.isArray(data.steps)) throw new Error('Invalid');
+      if (steps.length && !confirm(`Replace your ${steps.length} current step${steps.length !== 1 ? 's' : ''} with the imported guide?`)) return;
+      steps = []; idC = 0;
+      if (data.title) $('guideTitle').value = data.title;
+      data.steps.forEach(s => steps.push({ id: uid(), title: s.title||'', description: s.description||'', img: s.img||null }));
+      rebuildAll();
+      toast(`Imported ${steps.length} step${steps.length !== 1 ? 's' : ''} ✓`);
+    } catch { toast('Invalid file — make sure it\'s a .guide.json exported from Guide Builder'); }
+  };
+  r.readAsText(file);
+}
+
+// ── PDF ──
+async function generatePDF() {
+  if (!steps.length) return;
+  $('overlayMsg').textContent = 'Generating your PDF…';
+  $('overlay').classList.add('show');
+  await new Promise(r => setTimeout(r, 60));
+  try {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation });
+    const isLandscape = orientation === 'landscape';
+    const W = isLandscape ? 297 : 210;
+    const H = isLandscape ? 210 : 297;
+    const mg = 16, cw = W - mg * 2;
+    const guideTitle = $('guideTitle').value.trim() || 'Step-by-Step Guide';
+
+    // Cover
+    const LOGO_W = 80, LOGO_H = Math.round(80 * (113/287));
+    const logoX = (W - LOGO_W) / 2, logoY = H/2 - LOGO_H/2 - 18;
+    const logoPng = await svgToPng(LOGO_SVG, 574, 226);
+    if (logoPng) doc.addImage(logoPng, 'PNG', logoX, logoY, LOGO_W, LOGO_H);
+    doc.setTextColor(20,20,18); doc.setFont('helvetica','bold'); doc.setFontSize(20);
+    const titleLines = doc.splitTextToSize(guideTitle, 160);
+    const titleY = logoY + LOGO_H + 16;
+    doc.text(titleLines, W/2, titleY, { align: 'center' });
+
+    // Steps
+    for (let i = 0; i < steps.length; i++) {
+      const s = steps[i];
+      doc.addPage();
+
+      // Fixed zones — 10% title / 50% image / 40% text of content area
+      const contentH = H - mg * 2;
+      const zTitle = mg;
+      const hTitle = contentH * 0.10;
+      const zImg   = zTitle + hTitle;
+      const hImg   = contentH * 0.70;
+      const zText  = zImg + hImg;
+      const hText  = contentH * 0.20;
+
+      // ── Title strip ──
+      doc.setFillColor(240,240,236);
+      doc.roundedRect(mg, zTitle, cw, hTitle, 3, 3, 'F');
+      doc.setFillColor(26,26,24);
+      doc.circle(mg + hTitle/2, zTitle + hTitle/2, hTitle * 0.38, 'F');
+      doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(12);
+      doc.text(String(i+1), mg + hTitle/2, zTitle + hTitle/2, { align: 'center', baseline: 'middle' });
+      doc.setTextColor(26,26,24); doc.setFontSize(13);
+      doc.text(s.title || `Step ${i+1}`, mg + hTitle + 4, zTitle + hTitle/2, { baseline: 'middle' });
+
+      // ── Image zone (50%) ──
+      if (s.img) {
+        try {
+          const im = new Image();
+          await new Promise(res => { im.onload = res; im.onerror = res; im.src = s.img; });
+          const natW = im.naturalWidth || 800;
+          const natH = im.naturalHeight || 500;
+
+          // Scale to fill zone width; never exceed zone height
+          const ratio = Math.min(cw / natW, hImg / natH);
+          const iW = natW * ratio;
+          const iH = natH * ratio;
+
+          // Center image in zone
+          const ix = mg + (cw - iW) / 2;
+          const iy = zImg + (hImg - iH) / 2;
+
+          // Lossless PNG for full quality
+          const canvas = document.createElement('canvas');
+          canvas.width = natW; canvas.height = natH;
+          canvas.getContext('2d').drawImage(im, 0, 0);
+          const pngData = canvas.toDataURL('image/png');
+
+          doc.setDrawColor(220,220,215); doc.setLineWidth(0.3);
+          doc.roundedRect(ix-1, iy-1, iW+2, iH+2, 2, 2);
+          doc.addImage(pngData, 'PNG', ix, iy, iW, iH, undefined, 'NONE');
+        } catch(e) { console.error(e); }
+      } else {
+        doc.setFillColor(248,248,246); doc.setDrawColor(210,210,205); doc.setLineWidth(0.3);
+        doc.roundedRect(mg, zImg + 4, cw, hImg - 8, 3, 3, 'FD');
+        doc.setTextColor(185,183,174); doc.setFont('helvetica','normal'); doc.setFontSize(10);
+        doc.text('[ No screenshot ]', W/2, zImg + hImg/2, { align: 'center', baseline: 'middle' });
+      }
+
+      // ── Text zone (40%) ──
+      if (s.description && s.description.replace(/<[^>]+>/g,'').trim()) {
+        doc.setDrawColor(180,178,169); doc.setLineWidth(0.5);
+        doc.line(mg, zText + 4, mg, zText + hText - 4);
+        doc.setTextColor(30,30,25);
+        renderRichText(doc, s.description, mg + 7, zText + 5, cw - 10, 11);
+      }
+
+      // ── Page footer ──
+      doc.setTextColor(200,200,195); doc.setFontSize(9);
+      doc.text(`${i+1} / ${steps.length}`, W/2, H-7, { align: 'center' });
+    }
+
+    const slug = guideTitle.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')||'guide';
+    doc.save(`${slug}.pdf`);
+    toast('PDF downloaded ✓');
+  } catch(err) {
+    console.error(err);
+    toast('Something went wrong — check console');
+  } finally {
+    $('overlay').classList.remove('show');
+  }
+}
+</script>
+</body>
+</html>

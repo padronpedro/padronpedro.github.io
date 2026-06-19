@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopify Editions — Spring '26 · Dev Team Brief</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --ink:#16201a;
+    --ink-soft:#3c4a41;
+    --paper:#f1f4ef;
+    --card:#ffffff;
+    --line:#dbe3d9;
+    --line-strong:#c3cfbf;
+    --green:#137a4e;
+    --green-deep:#0c5638;
+    --green-tint:#e4f1e6;
+    --amber:#c47d20;
+    --amber-tint:#fbeed7;
+    --shadow:0 1px 2px rgba(22,32,26,.04), 0 8px 24px rgba(22,32,26,.05);
+    --display:'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --body:'Inter', ui-sans-serif, system-ui, sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- Header ---------- */
+  header.masthead{
+    border-bottom:1px solid var(--line-strong);
+    background:
+      radial-gradient(120% 140% at 88% -20%, var(--green-tint) 0%, rgba(228,241,230,0) 46%),
+      var(--paper);
+  }
+  .masthead .wrap{padding-top:48px;padding-bottom:40px;}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--green-deep);
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    margin-bottom:22px;
+  }
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;}
+  .eyebrow .sep{color:var(--line-strong);}
+  h1{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:clamp(32px,5.2vw,56px);
+    line-height:1.02;
+    letter-spacing:-.02em;
+    margin:0 0 18px;
+    max-width:18ch;
+  }
+  h1 .accent{color:var(--green);}
+  .lede{
+    font-size:clamp(16px,1.7vw,18.5px);
+    color:var(--ink-soft);
+    max-width:62ch;
+    margin:0 0 26px;
+  }
+  .meta-row{
+    display:flex;gap:28px;flex-wrap:wrap;align-items:center;
+    font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);
+  }
+  .meta-row b{color:var(--ink);font-weight:600;}
+  .meta-row a.src{
+    color:var(--green-deep);text-decoration:none;
+    border-bottom:1px solid var(--line-strong);padding-bottom:1px;
+  }
+  .meta-row a.src:hover{border-color:var(--green);}
+
+  /* ---------- Top picks rail ---------- */
+  .picks{padding:44px 0 8px;}
+  .section-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;flex-wrap:wrap;}
+  .section-head h2{
+    font-family:var(--display);font-weight:600;font-size:22px;letter-spacing:-.01em;margin:0;
+  }
+  .section-head .note{font-family:var(--mono);font-size:12px;color:var(--ink-soft);}
+  .picks-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+  }
+  .pick{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--amber);
+    border-radius:12px;
+    padding:18px 18px 16px;
+    text-decoration:none;
+    display:flex;flex-direction:column;gap:8px;
+    transition:transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+  }
+  .pick:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-left-color:var(--green);}
+  .pick .num{font-family:var(--mono);font-size:11px;color:var(--amber);font-weight:600;}
+  .pick h3{font-family:var(--display);font-weight:600;font-size:16.5px;line-height:1.2;margin:0;letter-spacing:-.01em;}
+  .pick p{font-size:13.5px;color:var(--ink-soft);margin:0;line-height:1.45;}
+  .pick .for-us{
+    margin-top:auto;font-family:var(--mono);font-size:11px;color:var(--green-deep);
+    background:var(--green-tint);border-radius:6px;padding:6px 8px;line-height:1.4;
+  }
+
+  /* ---------- Controls ---------- */
+  .controls{
+    position:sticky;top:0;z-index:20;
+    background:rgba(241,244,239,.86);
+    backdrop-filter:saturate(140%) blur(8px);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    margin-top:40px;
+  }
+  .controls .wrap{padding-top:14px;padding-bottom:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;flex:1;min-width:240px;}
+  .chip{
+    font-family:var(--mono);font-size:12px;
+    border:1px solid var(--line-strong);background:var(--card);
+    color:var(--ink-soft);
+    padding:6px 11px;border-radius:999px;cursor:pointer;
+    transition:all .12s ease;white-space:nowrap;
+  }
+  .chip:hover{border-color:var(--green);color:var(--ink);}
+  .chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .ctl-right{display:flex;gap:10px;align-items:center;}
+  .search{
+    font-family:var(--mono);font-size:12.5px;
+    border:1px solid var(--line-strong);border-radius:8px;background:var(--card);
+    padding:7px 11px;width:190px;color:var(--ink);
+  }
+  .search::placeholder{color:#9aa79a;}
+  .search:focus{outline:2px solid var(--green);outline-offset:1px;}
+  .toggle{
+    display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+    font-family:var(--mono);font-size:12px;color:var(--ink-soft);user-select:none;
+  }
+  .toggle input{position:absolute;opacity:0;width:0;height:0;}
+  .toggle .track{
+    width:34px;height:19px;border-radius:999px;background:var(--line-strong);position:relative;transition:background .14s ease;
+  }
+  .toggle .track::after{
+    content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:transform .14s ease;
+  }
+  .toggle input:checked + .track{background:var(--amber);}
+  .toggle input:checked + .track::after{transform:translateX(15px);}
+  .toggle input:focus-visible + .track{outline:2px solid var(--green);outline-offset:2px;}
+
+  /* ---------- Cards grid ---------- */
+  main{padding:34px 0 60px;}
+  .count{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:17px 17px 15px;display:flex;flex-direction:column;gap:9px;
+    transition:transform .14s ease, box-shadow .14s ease;
+  }
+  .card:hover{transform:translateY(-2px);box-shadow:var(--shadow);}
+  .card.is-priority{border-left:3px solid var(--amber);}
+  .card-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .tag{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--green-deep);background:var(--green-tint);
+    padding:3px 7px;border-radius:5px;font-weight:600;
+  }
+  .status{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--ink-soft);border:1px solid var(--line-strong);
+    padding:3px 7px;border-radius:5px;
+  }
+  .status.preview{color:var(--amber);border-color:var(--amber);background:var(--amber-tint);}
+  .status.soon{color:#8a6d2f;}
+  .star{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--amber);font-weight:600;}
+  .card h3{font-family:var(--display);font-weight:600;font-size:16px;line-height:1.22;margin:2px 0 0;letter-spacing:-.01em;}
+  .card p{font-size:13.5px;color:var(--ink-soft);margin:0;line-height:1.46;}
+  .for-us{
+    font-family:var(--mono);font-size:11px;color:var(--green-deep);
+    background:var(--green-tint);border-radius:6px;padding:7px 9px;line-height:1.45;
+  }
+  .for-us b{color:var(--green-deep);}
+  .card .doc{
+    margin-top:auto;padding-top:4px;
+    font-family:var(--mono);font-size:11.5px;font-weight:500;
+    color:var(--green-deep);text-decoration:none;
+    display:inline-flex;align-items:center;gap:5px;width:fit-content;
+  }
+  .card .doc:hover{color:var(--green);}
+  .card .doc .arr{transition:transform .12s ease;}
+  .card .doc:hover .arr{transform:translateX(3px);}
+
+  .empty{
+    grid-column:1/-1;text-align:center;padding:48px 0;
+    font-family:var(--mono);font-size:13px;color:var(--ink-soft);
+  }
+
+  /* ---------- Footer ---------- */
+  footer{border-top:1px solid var(--line-strong);background:var(--card);}
+  footer .wrap{padding:28px 24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);}
+  footer a{color:var(--green-deep);text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:900px){
+    .picks-grid,.grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:600px){
+    .picks-grid,.grid{grid-template-columns:1fr;}
+    .controls{position:static;}
+    .search{width:100%;}
+    .ctl-right{width:100%;justify-content:space-between;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">
+      <span class="dot"></span> Shopify Editions
+      <span class="sep">/</span> Spring &rsquo;26
+      <span class="sep">/</span> Internal dev brief
+    </div>
+    <h1>The <span class="accent">150+ updates</span>, filtered down to what moves our work.</h1>
+    <p class="lede">A curated read of Spring &rsquo;26 for the team &mdash; weighted toward theme-from-scratch builds, discount Functions, metaobjects, Mechanic/ShopifyQL reporting, checkout extensibility, and web-component frontends. Amber-tabbed cards map onto something we&rsquo;re actively building.</p>
+    <div class="meta-row">
+      <span><b id="totalCount">0</b> features curated</span>
+      <span><b id="priorityCount">0</b> tied to active projects</span>
+      <span>Source: <a class="src" href="https://www.shopify.com/ca/editions/spring2026" target="_blank" rel="noopener">shopify.com/editions/spring2026</a></span>
+    </div>
+  </div>
+</header>
+
+<section class="picks wrap" aria-label="Top picks for the team">
+  <div class="section-head">
+    <h2>Top picks for us</h2>
+    <span class="note">// the features we flagged as relevant to our work</span>
+  </div>
+  <div class="picks-grid" id="picksGrid"></div>
+</section>
+
+<div class="controls">
+  <div class="wrap">
+    <div class="chips" id="chips" role="group" aria-label="Filter by area"></div>
+    <div class="ctl-right">
+      <label class="toggle">
+        <input type="checkbox" id="priorityOnly">
+        <span class="track" aria-hidden="true"></span>
+        For us only
+      </label>
+      <input class="search" id="search" type="search" placeholder="search features…" aria-label="Search features">
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="count" id="resultCount"></div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Compiled for the team &middot; not affiliated with Shopify &middot; links go to shopify.dev / help.shopify.com</span>
+    <span><a href="https://www.shopify.com/ca/editions/spring2026" target="_blank" rel="noopener">Read the full edition &rarr;</a></span>
+  </div>
+</footer>
+
+<script>
+/* Category registry: code -> label */
+const CATS = {
+  storefront: "Themes & Storefront",
+  checkout:   "Checkout & Functions",
+  data:       "Data & Metaobjects",
+  platform:   "Platform & DX",
+  agentic:    "Agentic & AI",
+  merch:      "Merchandising",
+  commerce:   "Markets, Tax & B2B",
+  marketing:  "Marketing & Messaging",
+  automation: "Automation & Ops",
+  apps:       "App Business"
+};
+
+/* status: live | preview | soon  (omit -> live) */
+const FEATURES = [
+  /* ---- Checkout & Functions ---- */
+  { cat:"checkout", title:"Prerequisites in BXGY discount functions",
+    status:"live",
+    desc:"A new prerequisites field on product discount functions lets you specify which items must be in cart before the discount applies.",
+    forUs:"Direct hit on the Buy-3-pay-for-2 app — express the qualifying set declaratively instead of hand-rolling cart logic.",
+    url:"https://shopify.dev/docs/api/functions/latest/discount#CartLinesDiscountsGenerateRunResult.fields.operations.productDiscountsAdd.candidates.prerequisites" },
+
+  { cat:"checkout", title:"Metaobject data in checkout Functions",
+    desc:"Read metaobject entries inside checkout Functions to drive custom discounts, product rules, and personalized checkout logic.",
+    forUs:"Pairs with our metaobject-first patterns — config lives in metaobjects, the Function reads it at runtime.",
+    url:"https://shopify.dev/docs/apps/build/metaobjects#use-in-shopify-functions" },
+
+  { cat:"checkout", title:"Discount config via admin UI extensions",
+    desc:"Admin UI extensions can manage discount classes and render conditional UI based on the discount method.",
+    forUs:"The merchant-facing config surface for our discount app — no separate embedded page needed.",
+    url:"https://shopify.dev/docs/apps/build/discounts/build-ui-extension" },
+
+  { cat:"checkout", title:"Cart metafields carry over to orders",
+    desc:"Set cartToOrderCopyable on an order metafield definition and cart metafield values copy to the order at checkout completion.",
+    forUs:"Cleaner than line-item-property hacks for persisting quiz/selection data through to the order.",
+    url:"https://shopify.dev/docs/apps/build/metafields/use-metafield-capabilities#cart-to-order-copyable" },
+
+  { cat:"checkout", title:"Polaris web components upgrade via AI Toolkit",
+    desc:"Migrate checkout and customer-account extensions to Polaris web components using your preferred coding agent.",
+    forUs:"Consistent with our web-component approach; agent-assisted migration cuts the grunt work.",
+    url:"https://shopify.dev/docs/apps/build/checkout/migrate-to-web-components#migrate-using-ai" },
+
+  { cat:"checkout", title:"Billing address & PO number in Functions",
+    desc:"Cart/checkout validation Functions can now query billing address and PO number to enforce compliance and B2B rules.",
+    url:"https://shopify.dev/docs/api/functions/latest/cart-and-checkout-validation#supported-checkout-field-targets" },
+
+  { cat:"checkout", title:"Bulk editing extensions for discounts",
+    desc:"Build extensions for bulk actions on the discount index so merchants manage many discounts at once.",
+    url:"https://shopify.dev/docs/apps/build/admin/actions-blocks/build-admin-action" },
+
+  { cat:"checkout", title:"Stacking multiple product discounts",
+    desc:"Apply more than one discount to the same product in a single order, e.g. a percentage off plus a fixed amount.",
+    url:"https://help.shopify.com/en/manual/discounts/discount-combinations" },
+
+  { cat:"checkout", title:"Address format validation across checkouts",
+    desc:"Enforce address restrictions in online and agentic checkouts using rules in Checkout Blocks.",
+    url:"https://help.shopify.com/en/manual/checkout-settings/checkout-blocks/customizations/address-format-validation" },
+
+  { cat:"checkout", title:"Ship and pick up in one checkout",
+    desc:"Customers can choose shipping for some items and in-store pickup for others within a single checkout.",
+    forUs:"Mixed-fulfillment carts without custom splitting — relevant for any client running retail plus online.",
+    url:"https://help.shopify.com/manual/checkout-settings/ship-and-pickup" },
+
+  /* ---- Themes & Storefront ---- */
+  { cat:"storefront", title:"Color palettes for themes",
+    desc:"A new color-customization architecture: define palettes in settings that are available across the whole theme.",
+    forUs:"Reworks how we wire color tokens in the from-scratch theme — define once, expose to Liquid, keep Tailwind in sync.",
+    url:"https://shopify.dev/docs/storefronts/themes/best-practices/design/color-system" },
+
+  { cat:"storefront", title:"Customer account web component",
+    desc:"A Shopify-managed component that lets customers sign in and reach account menus without leaving the storefront.",
+    forUs:"Drop-in that matches our web-component architecture instead of a full account-page redirect.",
+    url:"https://shopify.dev/docs/storefronts/themes/customer-engagement/account-component" },
+
+  { cat:"storefront", title:"Standard storefront events & actions",
+    desc:"Themes can adopt a standard set of storefront events and actions so apps and AI agents interact with the site reliably.",
+    forUs:"Worth adopting in the base theme — gives our app extensions and agents a stable contract to hook into.",
+    url:"https://shopify.dev/docs/storefronts/themes/best-practices/standard-events-and-actions" },
+
+  { cat:"storefront", title:"Accelerated checkout for add-ons",
+    desc:"Shop Pay, Apple Pay and other accelerated checkouts support nested cart lines, so add-ons buy directly from the PDP.",
+    forUs:"Unblocks bundle/add-on PDPs that previously broke express checkout.",
+    url:"https://shopify.dev/docs/storefronts/themes/pricing-payments/accelerated-checkout/multiple-product-checkout" },
+
+  { cat:"storefront", title:"Pre-populate email on sign-in",
+    desc:"Use the login_hint parameter to pre-fill the customer's email when linking to the sign-in page.",
+    forUs:"Smoother re-entry from emails/links — carry the address straight into the sign-in form.",
+    url:"https://shopify.dev/docs/storefronts/themes/sign-in#link-to-the-sign-in-page-with-email-prepopulated" },
+
+  { cat:"storefront", title:"All-new Hydrogen on any stack", status:"preview",
+    desc:"Agent-first and rebuilt from the ground up, Hydrogen now works with any framework and runtime.",
+    forUs:"Reframes headless decisions — Hydrogen primitives without committing to Remix/Oxygen end-to-end.",
+    url:"https://shopify.dev/docs/storefronts/headless/developer-preview" },
+
+  { cat:"storefront", title:"Side-by-side theme & checkout editor",
+    desc:"On laptops, the theme and checkout editors show sections and settings side by side instead of a single panel.",
+    url:"https://help.shopify.com/en/manual/online-store/themes/customizing-themes" },
+
+  { cat:"storefront", title:"365-day customer account sessions",
+    desc:"Sign-in sessions now persist for up to a full year, so customers pick up where they left off.",
+    forUs:"Fewer re-auth prompts on stores using new customer accounts — smoother returning-visitor UX.",
+    url:"https://help.shopify.com/en/manual/customers/customer-accounts" },
+
+  /* ---- Data & Metaobjects ---- */
+  { cat:"data", title:"Metafields in ShopifyQL",
+    desc:"ShopifyQL supports metafields as dimensions and filters via dot-syntax in the Analytics API and the online editor.",
+    forUs:"Big for our Mechanic reporting — segment and filter ShopifyQL reports by custom data without Admin-API workarounds.",
+    url:"https://shopify.dev/docs/api/shopifyql#metafields" },
+
+  { cat:"data", title:"Streamlined Metafields & Metaobjects API",
+    desc:"A simpler GraphQL surface for reading and writing metafields and metaobjects.",
+    forUs:"Trims boilerplate in the stockist/metaobject work; fewer round-trips for read/write.",
+    url:"https://shopify.dev/changelog/streamlined-metaobject-api" },
+
+  { cat:"data", title:"Declarative metaobjects don't require scopes",
+    desc:"App-owned metaobjects no longer need scopes, so their data migrates cleanly once the app is installed.",
+    forUs:"Removes a scope-handshake step when shipping apps that seed their own metaobject definitions.",
+    url:"https://shopify.dev/changelog/metaobject-scopes-not-required-for-app-metaobjects" },
+
+  { cat:"data", title:"Analytics filtered by metafields",
+    desc:"Filter and group analytics reports by your own custom structured data.",
+    forUs:"Lets client dashboards slice by the metafields we already model.",
+    url:"https://help.shopify.com/manual/reports-and-analytics/shopify-reports/report-types/custom-reports/filter-and-edit#metafields" },
+
+  { cat:"data", title:"New Collections API", status:"soon",
+    desc:"Composable source groups, variant-level conditions, and exclusion rules — update apps before the merchant rollout.",
+    forUs:"Variant-level + exclusion conditions remove the manual-collection fallbacks we hit on complex catalogs.",
+    url:"https://shopify.dev/docs/api/admin-graphql/2026-07/mutations/collectionConditionsSourceCreate" },
+
+  /* ---- Platform & DX ---- */
+  { cat:"platform", title:"GraphQL & bulk operations from the CLI",
+    desc:"Run Admin API queries and bulk operations from the terminal or an agent, with automatic auth and status tracking.",
+    forUs:"Scriptable data pulls/migrations straight from the CLI — no throwaway Node script to auth and poll.",
+    url:"https://shopify.dev/changelog/use-the-admin-api-and-bulk-operations-in-shopify-cli" },
+
+  { cat:"platform", title:"More control over webhook events",
+    desc:"Trigger webhooks only on specific field changes, and use custom GraphQL queries to receive just the data you need.",
+    forUs:"Cuts noise on our integration webhooks — fire on the field that matters, get a tailored payload.",
+    url:"https://shopify.dev/docs/apps/build/events" },
+
+  { cat:"platform", title:"Safer app deployments in CI/CD",
+    desc:"Configure pipelines that deploy new and updated extensions without accidentally deleting existing ones across live stores.",
+    forUs:"Removes the scariest part of multi-store extension deploys from our GitHub Actions flow.",
+    url:"https://shopify.dev/changelog/more-control-over-app-deploys-in-cicd-pipelines" },
+
+  { cat:"platform", title:"CLI auto-upgrades + semantic versioning",
+    desc:"Shopify CLI auto-upgrades for minor and patch releases; major versions require opt-in under new semver rules.",
+    forUs:"Less manual CLI-bump churn; pin majors, let patches ride.",
+    url:"https://shopify.dev/changelog/shopify-cli-40-semver-auto-updates-removing-deprecated-flags-and-commands" },
+
+  { cat:"platform", title:"No backend for lightweight apps (App Home)",
+    desc:"Build an App Home directly in the admin without standing up or maintaining a backend server.",
+    forUs:"Internal tools and small client apps ship without hosting overhead.",
+    url:"https://shopify.dev/docs/api/app-home-ui-extension/latest" },
+
+  { cat:"platform", title:"Shopify Dev MCP for all API versions",
+    desc:"The Dev MCP server returns accurate context and code validation for every supported API version, with lower token usage.",
+    forUs:"Sharper agent-assisted dev — version-correct schema validation inside our editors.",
+    url:"https://shopify.dev/docs/apps/build/ai-toolkit#install-with-the-dev-mcp-server" },
+
+  { cat:"platform", title:"Parallel reads for bulk queries",
+    desc:"Run Admin API queries up to four times faster with parallelized bulk operations.",
+    url:"https://shopify.dev/changelog/bulk-queries-now-execute-faster" },
+
+  { cat:"platform", title:"App Events API",
+    desc:"Send events from inside your app to Shopify, then monitor and manage performance in the Dev Dashboard.",
+    url:"https://www.shopify.com/partners/blog/app-events" },
+
+  { cat:"platform", title:"Stronger app security (expiring tokens)",
+    desc:"Public apps now use expiring access tokens with OAuth 2.0-compliant refresh flows.",
+    url:"https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/offline-access-tokens#expiring-vs-non-expiring-offline-tokens" },
+
+  { cat:"platform", title:"Revamped Polaris docs",
+    desc:"Every Polaris reference page gets more code samples and use cases, clearer descriptions, and better navigation.",
+    url:"https://shopify.dev/docs/api/polaris" },
+
+  /* ---- Agentic & AI ---- */
+  { cat:"agentic", title:"Products auto-adapted for AI agents",
+    desc:"Shopify Catalog standardizes and enriches product data and syndicates it to AI channels — Shopify-syndicated data drives roughly 2x conversion in AI chats.",
+    forUs:"Baseline AI-channel readiness to switch on for clients; structured product data is the entry ticket.",
+    url:"https://help.shopify.com/en/manual/promoting-marketing/seo/shopify-catalog" },
+
+  { cat:"agentic", title:"Commerce skills for your coding agent",
+    desc:"Build and manage storefronts, apps, and themes from Claude Code, Codex, Cursor, Hermes, and more via the AI Toolkit.",
+    forUs:"Fits how we already work — agent-driven scaffolding and edits against real store context.",
+    url:"https://shopify.dev/docs/apps/build/ai-toolkit" },
+
+  { cat:"agentic", title:"Open protocol for agentic commerce",
+    desc:"Build agentic shopping from discovery to purchase with Catalog, Cart, and Checkout MCPs powered by the Universal Commerce Protocol.",
+    forUs:"The substrate for productizing agentic experiences for growth-focused clients.",
+    url:"https://shopify.dev/docs/agents" },
+
+  { cat:"agentic", title:"Catalog API image search & lookup",
+    desc:"Pass images to return visually similar products, and look up real-time price/availability for up to 50 products per request.",
+    url:"https://shopify.dev/docs/agents/catalog/global-catalog" },
+
+  { cat:"agentic", title:"Store management with agents",
+    desc:"Run a store inside Claude, ChatGPT, or Perplexity — add products, create collections, manage orders from chat.",
+    url:"https://www.shopify.com/build-with-ai#chat-connectors" },
+
+  { cat:"agentic", title:"Sponsored products with Catalog API", status:"preview",
+    desc:"Earn revenue on sales made in agentic experiences you build with the Catalog API. Developer preview coming soon.",
+    url:"https://shopify.dev/docs/agents/catalog#earn-with-paid-placements" },
+
+  /* ---- Merchandising ---- */
+  { cat:"merch", title:"Variant-level product publishing",
+    desc:"Control which variants are published per channel and per market — no workarounds.",
+    forUs:"Solves the per-variant availability cases we used to script around.",
+    url:"https://help.shopify.com/en/manual/products/variants/publish-variants" },
+
+  { cat:"merch", title:"A/B tests on store & checkout (Rollouts)",
+    desc:"Publish a theme, checkout config, or customer-accounts setup on a schedule, or A/B test it with Rollouts.",
+    forUs:"Native theme/checkout experimentation we can wire into client growth roadmaps.",
+    url:"https://help.shopify.com/manual/markets-new/rollouts" },
+
+  { cat:"merch", title:"Better storefront search & discovery results",
+    desc:"Even with typos or unusual phrasing, shoppers get relevant results — improving what Search & Discovery surfaces.",
+    forUs:"Easy win to switch on for clients running Search & Discovery; better recall with no custom search build.",
+    url:"https://help.shopify.com/en/manual/online-store/storefront-search" },
+
+  { cat:"merch", title:"SimGym — AI store analysis on any theme",
+    desc:"Analyze a single theme to get ideas from AI-simulated shoppers on ways to improve the store.",
+    forUs:"A quick pre-handoff sanity pass on a build before it goes live.",
+    url:"https://help.shopify.com/en/manual/online-store/simgym#simulations" },
+
+  /* ---- Automation & Ops ---- */
+  { cat:"automation", title:"Simulated events to test Flow workflows",
+    desc:"Generate test events for Shopify Flow automations with Sidekick and verify your logic before it runs live.",
+    forUs:"Dry-run Flow logic without firing real orders — safer than spinning up test orders by hand.",
+    url:"https://help.shopify.com/manual/shopify-flow/manage/test-workflow" },
+
+  { cat:"automation", title:"Code editor in Shopify Flow",
+    desc:"Syntax highlighting, autocomplete, and formatting for Liquid variables inside Shopify Flow.",
+    forUs:"Makes Flow a more serious option next to Mechanic for Liquid-heavy automations.",
+    url:"https://help.shopify.com/en/manual/shopify-flow/getting-started/concepts/variables" },
+
+  { cat:"automation", title:"ShopifyQL & more Admin API fields in Flow",
+    desc:"Access analytics data and additional Admin API fields inside Flow automations without writing code.",
+    forUs:"Overlaps with our Mechanic reporting jobs — some can move to Flow with less custom code.",
+    url:"https://help.shopify.com/en/manual/shopify-flow/reference/actions" },
+
+  { cat:"automation", title:"Sidekick works with your apps",
+    desc:"Sidekick can answer questions about and take actions in partner apps, starting with Judge.me, Klaviyo, Loop, Smile and more.",
+    forUs:"Klaviyo actions from Sidekick could streamline parts of the integrations we maintain.",
+    url:"https://apps.shopify.com/stories/guide-sidekick-app-extensions" },
+
+  { cat:"automation", title:"Flow version history",
+    desc:"See who changed a workflow and when, to track edits across the team.",
+    url:"https://help.shopify.com/manual/shopify-flow/manage/version-history" },
+
+  { cat:"automation", title:"New data visualizations in analytics",
+    desc:"Scatter plots, radars, bubble charts, and sunbursts for a deeper read on store data.",
+    url:"https://www.shopify.com/blog/new-ways-to-see-your-data" },
+
+  { cat:"automation", title:"Inventory adjustment workflows",
+    desc:"Adjust or set inventory quantities with a full audit trail for every change.",
+    forUs:"Audit trail helps when reconciling stock drift across channels and locations.",
+    url:"https://help.shopify.com/en/manual/products/inventory/adjusting-inventory/adjusting-inventory-quantities" },
+
+  /* ---- Markets, Tax & B2B ---- */
+  { cat:"commerce", title:"Shopify Tax available in Canada",
+    desc:"Auto-calculate Canadian sales tax by product category and track liability thresholds in the admin.",
+    forUs:"Directly relevant for our Canadian stores — automated GST/HST/PST and threshold tracking.",
+    url:"https://help.shopify.com/en/manual/taxes/shopify-tax/shopify-tax-canada" },
+
+  { cat:"commerce", title:"Discounts by market",
+    desc:"Run targeted promotions for customers in specific regions, retail locations, or B2B setups.",
+    forUs:"Region-specific promos without duplicate-discount workarounds — clean for multi-market clients.",
+    url:"https://help.shopify.com/en/manual/discounts#assign" },
+
+  { cat:"commerce", title:"B2B features on more plans",
+    desc:"Company profiles, volume pricing, and up to three B2B catalogs are available from the admin at no extra cost.",
+    forUs:"B2B builds no longer require Plus — widens which clients we can ship wholesale flows for.",
+    url:"https://help.shopify.com/en/manual/b2b/getting-started" },
+
+  /* ---- Marketing & Messaging ---- */
+  { cat:"marketing", title:"WhatsApp marketing channel",
+    desc:"Create and manage WhatsApp marketing campaigns directly in Shopify Messaging.",
+    forUs:"Native WhatsApp campaigns — an alternative to wiring up a third-party messaging integration.",
+    url:"https://help.shopify.com/en/manual/promoting-marketing/create-marketing/shopify-messaging" },
+
+  { cat:"marketing", title:"SMS & marketing automations in Messaging",
+    desc:"Build and manage marketing automations in Shopify Messaging, now including SMS automations.",
+    forUs:"Overlaps with Klaviyo flows — worth comparing for clients who'd rather stay native.",
+    url:"https://help.shopify.com/en/manual/promoting-marketing/create-marketing/shopify-messaging/marketing-automations/create" },
+
+  /* ---- App Business ---- */
+  { cat:"apps", title:"Simple billing with Shopify App Pricing",
+    desc:"Configure usage, recurring, or hybrid pricing in the app submission; Shopify handles plan selection, approval, and invoicing.",
+    forUs:"Lowers the lift to productize internal tools into billable apps.",
+    url:"https://community.shopify.dev/t/shopify-app-pricing-the-next-generation-of-app-billing" },
+
+  { cat:"apps", title:"Refreshed branding API for checkout & accounts",
+    desc:"One API for global branding settings plus page-specific tweaks across checkout, customer accounts, and sign-in.",
+    forUs:"Set logo, colors, and type once and propagate — useful on every storefront handoff.",
+    url:"https://shopify.dev/docs/api/admin-graphql/2026-04/mutations/checkoutAndAccountsConfigurationUpdate" }
+];
+
+/* ---------- Render ---------- */
+const grid = document.getElementById('grid');
+const picksGrid = document.getElementById('picksGrid');
+const chipsEl = document.getElementById('chips');
+const searchEl = document.getElementById('search');
+const priorityEl = document.getElementById('priorityOnly');
+const resultCount = document.getElementById('resultCount');
+
+const statusLabel = { live:"Live", preview:"Preview", soon:"Soon" };
+
+let activeCat = "all";
+
+/* header counts */
+document.getElementById('totalCount').textContent = FEATURES.length;
+document.getElementById('priorityCount').textContent = FEATURES.filter(f=>f.forUs).length;
+
+/* chips */
+const allChips = [["all","All"], ...Object.entries(CATS)];
+allChips.forEach(([code,label])=>{
+  const b=document.createElement('button');
+  b.className='chip';
+  b.textContent = code==="all" ? "All" : label;
+  b.setAttribute('aria-pressed', code==="all" ? "true":"false");
+  b.dataset.cat=code;
+  b.addEventListener('click',()=>{
+    activeCat=code;
+    document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed', c.dataset.cat===code ? "true":"false"));
+    render();
+  });
+  chipsEl.appendChild(b);
+});
+
+/* top picks — the team's flagged shortlist from this edition, in our order */
+const PICKS = [
+  "Products auto-adapted for AI agents",
+  "Sidekick works with your apps",
+  "Simulated events to test Flow workflows",
+  "Better storefront search & discovery results",
+  "SimGym — AI store analysis on any theme",
+  "Variant-level product publishing",
+  "Discounts by market",
+  "365-day customer account sessions",
+  "B2B features on more plans",
+  "WhatsApp marketing channel",
+  "SMS & marketing automations in Messaging",
+  "Code editor in Shopify Flow",
+  "Inventory adjustment workflows",
+  "Ship and pick up in one checkout",
+  "Shopify Tax available in Canada",
+  "No backend for lightweight apps (App Home)",
+  "Standard storefront events & actions",
+  "Customer account web component",
+  "Pre-populate email on sign-in",
+  "Color palettes for themes"
+];
+PICKS.forEach(title=>{
+  const f = FEATURES.find(x=>x.title===title);
+  if(!f) return;
+  const a=document.createElement('a');
+  a.className='pick'; a.href=f.url; a.target="_blank"; a.rel="noopener";
+  a.innerHTML = `
+    <span class="num">${CATS[f.cat]}</span>
+    <h3>${f.title}</h3>
+    <p>${f.desc}</p>
+    ${f.forUs?`<span class="for-us">${f.forUs}</span>`:''}`;
+  picksGrid.appendChild(a);
+});
+
+function cardHTML(f){
+  const statusClass = f.status && f.status!=="live" ? f.status : "";
+  const statusTxt = statusLabel[f.status||"live"];
+  return `
+    <article class="card ${f.forUs?'is-priority':''}">
+      <div class="card-top">
+        <span class="tag">${CATS[f.cat]}</span>
+        <span class="status ${statusClass}">${statusTxt}</span>
+        ${f.forUs?'<span class="star">★ for us</span>':''}
+      </div>
+      <h3>${f.title}</h3>
+      <p>${f.desc}</p>
+      ${f.forUs?`<div class="for-us">${f.forUs}</div>`:''}
+      <a class="doc" href="${f.url}" target="_blank" rel="noopener">Docs <span class="arr">&rarr;</span></a>
+    </article>`;
+}
+
+function render(){
+  const q = searchEl.value.trim().toLowerCase();
+  const pOnly = priorityEl.checked;
+  const list = FEATURES.filter(f=>{
+    if(activeCat!=="all" && f.cat!==activeCat) return false;
+    if(pOnly && !f.forUs) return false;
+    if(q){
+      const hay = (f.title+" "+f.desc+" "+(f.forUs||"")+" "+CATS[f.cat]).toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  grid.innerHTML = list.length
+    ? list.map(cardHTML).join("")
+    : `<div class="empty">No features match that filter. Try clearing search or the “for us” toggle.</div>`;
+  resultCount.textContent = `Showing ${list.length} of ${FEATURES.length}` +
+    (activeCat!=="all"?` · ${CATS[activeCat]}`:"") +
+    (pOnly?` · active-project only`:"");
+}
+
+searchEl.addEventListener('input', render);
+priorityEl.addEventListener('change', render);
+render();
+</script>
+</body>
+</html>
