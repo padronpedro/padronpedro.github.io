@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>
-      ADR-0001 · Loyalty / VIP Tier Program Architecture — Cecilie Bahnsen
+      ADR-0001 · Loyalty / VIP Tier Program Architecture
     </title>
     <style>
       :root {
@@ -692,19 +692,13 @@
 
     <article class="sheet">
       <header class="cover">
-        <p class="eyebrow">Architecture Decision Record · Cecilie Bahnsen</p>
+        <p class="eyebrow">Architecture Decision Record</p>
         <h1>Loyalty &amp; VIP Tier Program Architecture</h1>
         <p class="sub">
           How the Shopify storefront, Shopify Flow automation, and the custom
           Customer API work together to power loyalty points, VIP tiers, and
           benefits.
         </p>
-        <div class="meta">
-          <span class="m"><b>Status</b> · Accepted</span>
-          <span class="m"><b>Date</b> · 2026-06-18</span>
-          <span class="m"><b>Platform</b> · Shopify Plus</span>
-          <span class="m"><b>Author</b> · Signifly</span>
-        </div>
       </header>
 
       <div class="body">
@@ -722,9 +716,9 @@
 
         <h2 id="sec-1"><span class="num">1</span>Context</h2>
         <p>
-          Cecilie Bahnsen runs a <strong>VIP loyalty program</strong> where
+          <strong>VIP loyalty program</strong> allows
           customers accumulate <em>loyalty points</em> (based on lifetime spend)
-          and are placed into <strong>VIP tiers</strong>. Each tier unlocks
+          and are being placed into <strong>VIP tiers</strong> based on their points. Each tier unlocks
           <strong>benefits</strong> (discount codes, birthday gifts, curated
           products). Shopify alone cannot express this logic, so the program is
           built from <strong>three cooperating systems</strong>:
@@ -761,10 +755,7 @@
                 do (enrollment, profile, wishlist)
               </td>
               <td>
-                <a
-                  href="https://github.com/signifly/ceciliebahnsen-customer-api-node"
-                  ><code>signifly/ceciliebahnsen-customer-api-node</code></a
-                >
+                GitHub repository
               </td>
             </tr>
             <tr>
@@ -832,9 +823,9 @@
                 <figure class="board-figure">
           <div class="depmap">
             <div class="rail">
-              <div class="left">ADR-0001 · Architecture</div>
-              <div class="center">Cecilie Bahnsen — Loyalty / VIP Tier Program</div>
-              <div class="right">Signifly</div>
+              <div class="left">ADR · Architecture</div>
+              <div class="center">Loyalty / VIP Tier Program</div>
+              <div class="right"></div>
             </div>
             <div class="dm-title">Mapped out all dependencies</div>
             <div class="legend">
@@ -964,7 +955,6 @@
           </figcaption>
         </figure>
 
-        <h2 id="sec-5"><span class="num">5</span>Consequences &amp; Risks</h2>
         <div class="callout ok">
           <div class="head">✅ Benefits of this design</div>
           <ul>
@@ -975,7 +965,7 @@
             <li>
               The API keeps Admin API tokens
               <strong>off the storefront</strong> (security); CORS limits
-              callers to the known Cecilie Bahnsen domains.
+              callers to the Shopify store domains.
             </li>
             <li>
               Tiers and benefits are <strong>merchant-editable</strong> via
@@ -984,72 +974,9 @@
             </li>
           </ul>
         </div>
-        <div class="callout warn">
-          <div class="head">⚠️ Risks / things to be aware of</div>
-          <ol>
-            <li>
-              <strong>Two systems write the same fields.</strong> Flow (on every
-              order) and the API (on enrollment) both set
-              <code>loyalty_points</code> and the
-              <code>loyalty_vip_tier</code> tag. They must agree on the rules or
-              a customer's tier can flip between them.
-            </li>
-            <li>
-              <strong>Tier thresholds are defined in two places.</strong>
-              Shopify Flow hard-codes the thresholds (<code>2400</code>,
-              <code>6000</code>), while the API derives tiers from the
-              metaobject <code>points_condition</code>. Changing a threshold in
-              Admin <strong>will not</strong> update Flow.
-            </li>
-            <li>
-              <strong>Different look-back windows.</strong> The API enrollment
-              path sums orders from the <strong>last 30 days</strong>, while
-              Flow uses an advanced query over the customer's order history. The
-              definition of "points" should be reconciled.
-            </li>
-            <li>
-              <strong>Operational dependency on Vercel + env secrets.</strong>
-              If the API is down or a token expires, enrollment, profile edits,
-              and wishlist stop working (the theme's read-only tier display
-              still works from Liquid).
-            </li>
-            <li>
-              <strong><code>points ≈ amountSpent</code>.</strong> Points are
-              effectively lifetime spend (the API falls back to
-              <code>amountSpent</code> when the metafield is absent). This
-              should be a conscious product decision, not an accident.
-            </li>
-          </ol>
-        </div>
-
-        <h2 id="sec-6"><span class="num">6</span>Recommended Next Decisions</h2>
-        <ul class="tasks">
-          <li>
-            Make <code>vip_tier.points_condition</code> the
-            <strong>single source</strong> for thresholds and have Shopify Flow
-            reference it to remove the <code>2400 / 6000</code> duplication.
-          </li>
-          <li>
-            Align the points definition (look-back window, cancelled/refunded
-            handling) between Flow and the API.
-          </li>
-          <li>
-            Add idempotency/guarding so Flow and API don't overwrite each
-            other's tier assignment in a race.
-          </li>
-          <li>
-            Add monitoring/health alerting on the Customer API
-            (<code>/health</code>) so outages are visible.
-          </li>
-        </ul>
       </div>
     </article>
 
-    <footer class="doc">
-      Generated from <code>0001-loyalty-program-architecture.md</code> ·
-      Diagrams pre-rendered as SVG (no internet required) · Click any diagram to
-      enlarge.
-    </footer>
 
     <div class="lb" id="lightbox" aria-hidden="true">
       <button class="close" id="lbClose">✕ Close</button>
