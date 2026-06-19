@@ -24,7 +24,7 @@
         --warn: #9a5b00;
         --warn-bg: #fff7e8;
         --warn-rule: #f3dca6;
-        --maxw: 1000px;
+        --maxw: 1500px;
       }
       * {
         box-sizing: border-box;
@@ -540,6 +540,141 @@
           padding: 10px 0 0;
         }
       }
+
+      /* ===== Embedded dependency board (FIG 2) ===== */
+      .board-figure {
+        margin: 1.7em 0;
+        border: 1px solid var(--rule);
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+      }
+      .depmap {
+        --canvas: #f5f4f0;
+        --d-rule: #e4e3df;
+        --header-ink: #8c8c87;
+        --title-ink: #1b1c1e;
+        --chip-bg: #ededea;
+        --chip-ink: #6c6c67;
+        --chip-rule: #e0e0db;
+        --line: #b9b9b3;
+        --accent: #3f7ef0;
+        --blue: #3f7ef0;
+        --brown: #a9612f;
+        --brown-lite: #b87b4e;
+        --grey: #6b7077;
+        --actor: #565a60;
+        --db: #5d6b61;
+        --g-blue-fill: rgba(63, 126, 240, 0.06);
+        --g-blue-rule: rgba(63, 126, 240, 0.24);
+        --g-green-fill: rgba(28, 110, 74, 0.05);
+        --g-green-rule: rgba(28, 110, 74, 0.2);
+        --g-brown-fill: rgba(169, 97, 47, 0.06);
+        --g-brown-rule: rgba(169, 97, 47, 0.26);
+        background: var(--canvas);
+        font:
+          15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        color: var(--title-ink);
+      }
+      .depmap .rail {
+        display: flex;
+        align-items: center;
+        padding: 13px 24px;
+        font-size: 0.8rem;
+        color: var(--header-ink);
+        border-bottom: 1px solid var(--d-rule);
+      }
+      .depmap .rail .left { flex: 1; }
+      .depmap .rail .center { flex: 1; text-align: center; }
+      .depmap .rail .right {
+        flex: 1;
+        text-align: right;
+        font-weight: 600;
+        color: #6f6f6a;
+      }
+      .depmap .dm-title {
+        margin: 22px 0 6px;
+        padding: 0 24px;
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        color: var(--title-ink);
+      }
+      .depmap .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 2px 24px 0;
+        font-size: 0.72rem;
+        color: #8a8a85;
+      }
+      .depmap .legend span { display: inline-flex; align-items: center; gap: 6px; }
+      .depmap .legend i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+      .depmap .board-wrap { padding: 16px 24px 26px; }
+      .depmap .scaler { position: relative; margin: 0 auto; }
+      .depmap .stage { position: relative; width: 1240px; height: 600px; transform-origin: top left; }
+      .depmap .wires {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        pointer-events: none;
+      }
+      .depmap .group { position: absolute; border-radius: 16px; border: 1px solid; }
+      .depmap .group > .glabel {
+        position: absolute;
+        top: 8px;
+        left: 14px;
+        font-size: 0.68rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        font-weight: 600;
+        opacity: 0.65;
+      }
+      .depmap .group.blue { background: var(--g-blue-fill); border-color: var(--g-blue-rule); }
+      .depmap .group.blue .glabel { color: #2f63c7; }
+      .depmap .group.green { background: var(--g-green-fill); border-color: var(--g-green-rule); }
+      .depmap .group.green .glabel { color: #1c6e4a; }
+      .depmap .group.brown { background: var(--g-brown-fill); border-color: var(--g-brown-rule); }
+      .depmap .group.brown .glabel { color: #9a5526; }
+      .depmap .node {
+        position: absolute;
+        border-radius: 7px;
+        padding: 6px 9px 8px;
+        color: #fff;
+        box-shadow: 0 1px 2px rgba(16, 24, 40, 0.12), 0 6px 16px rgba(16, 24, 40, 0.07);
+        overflow: hidden;
+      }
+      .depmap .node .dots { display: flex; gap: 4px; margin-bottom: 5px; }
+      .depmap .node .dots i { width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, 0.38); }
+      .depmap .node .nt { font-size: 0.78rem; font-weight: 650; line-height: 1.15; }
+      .depmap .node .ns { font-size: 0.63rem; line-height: 1.25; opacity: 0.82; margin-top: 2px; }
+      .depmap .node.blue { background: var(--blue); }
+      .depmap .node.brown { background: var(--brown); }
+      .depmap .node.brownlite { background: var(--brown-lite); }
+      .depmap .node.grey { background: var(--grey); }
+      .depmap .node.actor { background: var(--actor); }
+      .depmap .node.db { background: var(--db); }
+      .depmap .node.actor .person { position: absolute; right: 7px; bottom: 6px; width: 22px; height: 22px; opacity: 0.5; }
+      .depmap .node.actor .nt, .depmap .node.actor .ns { padding-right: 26px; }
+      .depmap .node.db .dbicon { width: 13px; height: 13px; margin-bottom: 4px; opacity: 0.85; }
+      .depmap .elabel {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        background: var(--chip-bg);
+        color: var(--chip-ink);
+        border: 1px solid var(--chip-rule);
+        border-radius: 6px;
+        padding: 2px 7px;
+        font-size: 0.63rem;
+        font-weight: 500;
+        white-space: nowrap;
+        pointer-events: none;
+      }
+      .depmap .mascot { position: absolute; right: 10px; bottom: -4px; width: 72px; height: 86px; }
     </style>
   </head>
   <body>
@@ -694,14 +829,31 @@
         <h2 id="sec-3">
           <span class="num">3</span>System Architecture &amp; Dependencies
         </h2>
-        <figure class="diagram">
-          <div class="frame"><svg id="svg-arch" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" viewBox="0 0 1539.359375 925.50732421875" role="graphics-document document" aria-roledescription="flowchart-v2"><style>#svg-arch{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:15px;fill:#15171a;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#svg-arch .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#svg-arch .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#svg-arch .error-icon{fill:#fff4d6;}#svg-arch .error-text{fill:#000b29;stroke:#000b29;}#svg-arch .edge-thickness-normal{stroke-width:1px;}#svg-arch .edge-thickness-thick{stroke-width:3.5px;}#svg-arch .edge-pattern-solid{stroke-dasharray:0;}#svg-arch .edge-thickness-invisible{stroke-width:0;fill:none;}#svg-arch .edge-pattern-dashed{stroke-dasharray:3;}#svg-arch .edge-pattern-dotted{stroke-dasharray:2;}#svg-arch .marker{fill:#7a828f;stroke:#7a828f;}#svg-arch .marker.cross{stroke:#7a828f;}#svg-arch svg{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:15px;}#svg-arch p{margin:0;}#svg-arch .label{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#15171a;}#svg-arch .cluster-label text{fill:#000b29;}#svg-arch .cluster-label span{color:#000b29;}#svg-arch .cluster-label span p{background-color:transparent;}#svg-arch .label text,#svg-arch span{fill:#15171a;color:#15171a;}#svg-arch .node rect,#svg-arch .node circle,#svg-arch .node ellipse,#svg-arch .node polygon,#svg-arch .node path{fill:#eef2fb;stroke:#5b86e0;stroke-width:1px;}#svg-arch .rough-node .label text,#svg-arch .node .label text,#svg-arch .image-shape .label,#svg-arch .icon-shape .label{text-anchor:middle;}#svg-arch .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#svg-arch .rough-node .label,#svg-arch .node .label,#svg-arch .image-shape .label,#svg-arch .icon-shape .label{text-align:center;}#svg-arch .node.clickable{cursor:pointer;}#svg-arch .root .anchor path{fill:#7a828f!important;stroke-width:0;stroke:#7a828f;}#svg-arch .arrowheadPath{fill:#0b0b0b;}#svg-arch .edgePath .path{stroke:#7a828f;stroke-width:1px;}#svg-arch .flowchart-link{stroke:#7a828f;fill:none;}#svg-arch .edgeLabel{background-color:#dcf5e6;text-align:center;}#svg-arch .edgeLabel p{background-color:#dcf5e6;}#svg-arch .edgeLabel rect{opacity:0.5;background-color:#dcf5e6;fill:#dcf5e6;}#svg-arch .labelBkg{background-color:rgba(220, 245, 230, 0.5);}#svg-arch .cluster rect{fill:#fff4d6;stroke:hsl(43.9024390244, 60%, 81.9607843137%);stroke-width:1px;}#svg-arch .cluster text{fill:#000b29;}#svg-arch .cluster span{color:#000b29;}#svg-arch div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;background:#fff4d6;border:1px solid hsl(43.9024390244, 60%, 81.9607843137%);border-radius:2px;pointer-events:none;z-index:100;}#svg-arch .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#15171a;}#svg-arch rect.text{fill:none;stroke-width:0;}#svg-arch .icon-shape,#svg-arch .image-shape{background-color:#dcf5e6;text-align:center;}#svg-arch .icon-shape p,#svg-arch .image-shape p{background-color:#dcf5e6;padding:2px;}#svg-arch .icon-shape .label rect,#svg-arch .image-shape .label rect{opacity:0.5;background-color:#dcf5e6;fill:#dcf5e6;}#svg-arch .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#svg-arch .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#svg-arch .node .neo-node{stroke:#5b86e0;}#svg-arch [data-look="neo"].node rect,#svg-arch [data-look="neo"].cluster rect,#svg-arch [data-look="neo"].node polygon{stroke:url(#svg-arch-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-arch [data-look="neo"].node path{stroke:url(#svg-arch-gradient);stroke-width:1px;}#svg-arch [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-arch [data-look="neo"].node .neo-line path{stroke:#5b86e0;filter:none;}#svg-arch [data-look="neo"].node circle{stroke:url(#svg-arch-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-arch [data-look="neo"].node circle .state-start{fill:#000000;}#svg-arch [data-look="neo"].icon-shape .icon{fill:url(#svg-arch-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-arch [data-look="neo"].icon-shape .icon-neo path{stroke:url(#svg-arch-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-arch :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}#svg-arch .ext&gt;*{fill:rgb(255, 244, 214)!important;stroke:rgb(216, 165, 33)!important;color:rgb(91, 69, 0)!important;}#svg-arch .ext span{fill:rgb(255, 244, 214)!important;stroke:rgb(216, 165, 33)!important;color:rgb(91, 69, 0)!important;}#svg-arch .ext tspan{fill:rgb(91, 69, 0)!important;}#svg-arch .shop&gt;*{fill:rgb(220, 245, 230)!important;stroke:rgb(52, 160, 106)!important;color:rgb(16, 80, 47)!important;}#svg-arch .shop span{fill:rgb(220, 245, 230)!important;stroke:rgb(52, 160, 106)!important;color:rgb(16, 80, 47)!important;}#svg-arch .shop tspan{fill:rgb(16, 80, 47)!important;}#svg-arch .br&gt;*{fill:rgb(231, 239, 255)!important;stroke:rgb(91, 134, 224)!important;color:rgb(31, 58, 120)!important;}#svg-arch .br span{fill:rgb(231, 239, 255)!important;stroke:rgb(91, 134, 224)!important;color:rgb(31, 58, 120)!important;}#svg-arch .br tspan{fill:rgb(31, 58, 120)!important;}</style><g><marker id="svg-arch_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="svg-arch_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="svg-arch_flowchart-v2-pointEnd-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="svg-arch_flowchart-v2-pointStart-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="svg-arch_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="svg-arch_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="svg-arch_flowchart-v2-circleEnd-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="svg-arch_flowchart-v2-circleStart-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="svg-arch_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="svg-arch_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="svg-arch_flowchart-v2-crossEnd-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"/></marker><marker id="svg-arch_flowchart-v2-crossStart-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"/></marker><g class="root"><g class="clusters"><g class="cluster shop" id="svg-arch-Shopify" data-look="classic"><rect style="fill:#dcf5e6 !important;stroke:#34a06a !important" x="8" y="514.5" width="1184.109375" height="403.00733947753906"/><g class="cluster-label" transform="translate(498.796875, 514.5)"><foreignObject width="202.515625" height="22.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5;"><span class="nodeLabel" style="color:#10502f !important"><p>🟢 Shopify · system of record</p></span></div></foreignObject></g></g><g class="cluster ext" id="svg-arch-Flow" data-look="classic"><rect style="fill:#fff4d6 !important;stroke:#d8a521 !important" x="1212.109375" y="514.5" width="319.25" height="137"/><g class="cluster-label" transform="translate(1316.4140625, 514.5)"><foreignObject width="110.640625" height="22.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5;"><span class="nodeLabel" style="color:#5b4500 !important"><p>🔄 Shopify Flow</p></span></div></foreignObject></g></g><g class="cluster ext" id="svg-arch-API" data-look="classic"><rect style="fill:#fff4d6 !important;stroke:#d8a521 !important" x="21.2421875" y="272.5" width="957.4296875" height="137"/><g class="cluster-label" transform="translate(353.93359375, 272.5)"><foreignObject width="292.046875" height="22.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5;"><span class="nodeLabel" style="color:#5b4500 !important"><p>⚙️ Customer API · Node/Express on Vercel</p></span></div></foreignObject></g></g><g class="cluster br" id="svg-arch-Browser" data-look="classic"><rect style="fill:#e7efff !important;stroke:#5b86e0 !important" x="170.140625" y="8" width="922.03125" height="182"/><g class="cluster-label" transform="translate(556.296875, 8)"><foreignObject width="149.71875" height="22.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5;"><span class="nodeLabel" style="color:#1f3a78 !important"><p>🖥️ Customer Browser</p></span></div></foreignObject></g></g></g><g class="edgePaths"><path d="M609.012,121.627L542.533,133.022C476.055,144.418,343.098,167.209,276.619,185.479C210.141,203.75,210.141,217.5,210.141,231.25C210.141,245,210.141,258.75,210.141,269.958C210.141,281.167,210.141,289.833,210.141,294.167L210.141,298.5" id="svg-arch-L_Theme_RLoyalty_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_Theme_RLoyalty_0" data-points="W3sieCI6NjA5LjAxMTcxODc1LCJ5IjoxMjEuNjI2OTYxODc3MjIxMjV9LHsieCI6MjEwLjE0MDYyNSwieSI6MTkwfSx7IngiOjIxMC4xNDA2MjUsInkiOjIzMS4yNX0seyJ4IjoyMTAuMTQwNjI1LCJ5IjoyNzIuNX0seyJ4IjoyMTAuMTQwNjI1LCJ5IjozMDIuNX1d" data-look="classic" marker-end="url(#svg-arch_flowchart-v2-pointEnd)"/><path d="M623.492,160L613.859,165C604.226,170,584.961,180,575.328,191.875C565.695,203.75,565.695,217.5,565.695,231.25C565.695,245,565.695,258.75,565.695,269.958C565.695,281.167,565.695,289.833,565.695,294.167L565.695,298.5" id="svg-arch-L_Theme_RCustomers_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_Theme_RCustomers_0" data-points="W3sieCI6NjIzLjQ5MTkyOTk0NTA1NSwieSI6MTYwfSx7IngiOjU2NS42OTUzMTI1LCJ5IjoxOTB9LHsieCI6NTY1LjY5NTMxMjUsInkiOjIzMS4yNX0seyJ4Ijo1NjUuNjk1MzEyNSwieSI6MjcyLjV9LHsieCI6NTY1LjY5NTMxMjUsInkiOjMwMi41fV0=" data-look="classic" marker-end="url(#svg-arch_flowchart-v2-pointEnd)"/><path d="M806.963,160L812.369,165C817.775,170,828.587,180,833.993,191.875C839.398,203.75,839.398,217.5,839.398,231.25C839.398,245,839.398,258.75,839.398,269.958C839.398,281.167,839.398,289.833,839.398,294.167L839.398,298.5" id="svg-arch-L_Theme_RWishlist_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_Theme_RWishlist_0" data-points="W3sieCI6ODA2Ljk2MzI1NTQ5NDUwNTUsInkiOjE2MH0seyJ4Ijo4MzkuMzk4NDM3NSwieSI6MTkwfSx7IngiOjgzOS4zOTg0Mzc1LCJ5IjoyMzEuMjV9LHsieCI6ODM5LjM5ODQzNzUsInkiOjI3Mi41fSx7IngiOjgzOS4zOTg0Mzc1LCJ5IjozMDIuNX1d" data-look="classic" marker-end="url(#svg-arch_flowchart-v2-pointEnd)"/><path d="M873.012,145.62L893.955,153.016C914.898,160.413,956.785,175.207,977.729,189.478C998.672,203.75,998.672,217.5,998.672,231.25C998.672,245,998.672,258.75,998.672,277.042C998.672,295.333,998.672,318.167,998.672,341C998.672,363.833,998.672,386.667,998.672,406.833C998.672,427,998.672,444.5,998.672,462C998.672,479.5,998.672,497,998.672,517.167C998.672,537.333,998.672,560.167,998.672,583C998.672,605.833,998.672,628.667,998.672,648.833C998.672,669,998.672,686.5,981.139,707.366C963.606,728.232,928.54,752.464,911.007,764.581L893.474,776.697" id="svg-arch-L_Theme_Data_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_Theme_Data_0" data-points="W3sieCI6ODczLjAxMTcxODc1LCJ5IjoxNDUuNjE5NTQ3OTE0Njc2ODR9LHsieCI6OTk4LjY3MTg3NSwieSI6MTkwfSx7IngiOjk5OC42NzE4NzUsInkiOjIzMS4yNX0seyJ4Ijo5OTguNjcxODc1LCJ5IjoyNzIuNX0seyJ4Ijo5OTguNjcxODc1LCJ5IjozNDF9LHsieCI6OTk4LjY3MTg3NSwieSI6NDA5LjV9LHsieCI6OTk4LjY3MTg3NSwieSI6NDYyfSx7IngiOjk5OC42NzE4NzUsInkiOjUxNC41fSx7IngiOjk5OC42NzE4NzUsInkiOjU4M30seyJ4Ijo5OTguNjcxODc1LCJ5Ijo2NTEuNX0seyJ4Ijo5OTguNjcxODc1LCJ5Ijo3MDR9LHsieCI6ODkwLjE4MzU5Mzc1LCJ5Ijo3NzguOTcwNjg4NDM1MDc3NH1d" data-look="classic" marker-end="url(#svg-arch_flowchart-v2-pointEnd)"/><path d="M154.7,379.5L147.5,384.5C140.3,389.5,125.9,399.5,118.7,413.25C111.5,427,111.5,444.5,111.5,462C111.5,479.5,111.5,497,169.893,514.557C228.286,532.113,345.071,549.726,403.464,558.533L461.857,567.34" id="svg-arch-L_RLoyalty_Admin_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_RLoyalty_Admin_0" data-points="W3sieCI6MTU0LjcwMDI3MzcyMjYyNzc0LCJ5IjozNzkuNX0seyJ4IjoxMTEuNSwieSI6NDA5LjV9LHsieCI6MTExLjUsInkiOjQ2Mn0seyJ4IjoxMTEuNSwieSI6NTE0LjV9LHsieCI6NDY1LjgxMjUsInkiOjU2Ny45MzYwNTYyMTIwNTA5fV0=" data-look="classic" marker-end="url(#svg-arch_flowchart-v2-pointEnd)"/><path d="M258.836,379.5L265.161,384.5C271.485,389.5,284.133,399.5,290.457,413.25C296.781,427,296.781,444.5,296.781,462C296.781,479.5,296.781,497,288.609,512.212C280.436,527.423,264.09,540.346,255.918,546.808L247.745,553.269" id="svg-arch-L_RLoyalty_Storefront_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_RLoyalty_Storefront_0" data-points="W3sieCI6MjU4LjgzNjQ1MDcyOTkyNzA0LCJ5IjozNzkuNX0seyJ4IjoyOTYuNzgxMjUsInkiOjQwOS41fSx7IngiOjI5Ni43ODEyNSwieSI6NDYyfSx7IngiOjI5Ni43ODEyNSwieSI6NTE0LjV9LHsieCI6MjQ0LjYwNzE1MTAwMzY0OTYyLCJ5Ijo1NTUuNzV9XQ==" data-look="classic" marker-end="url(#svg-arch_flowchart-v2-pointEnd)"/><path d="M565.695,379.5L565.695,384.5C565.695,389.5,565.695,399.5,565.695,413.25C565.695,427,565.695,444.5,565.695,462C565.695,479.5,565.695,497,565.695,511.958C565.695,526.917,565.695,539.333,565.695,545.542L565.695,551.75" id="svg-arch-L_RCustomers_Admin_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_RCustomers_Admin_0" data-points="W3sieCI6NTY1LjY5NTMxMjUsInkiOjM3OS41fSx7IngiOjU2NS42OTUzMTI1LCJ5Ijo0MDkuNX0seyJ4Ijo1NjUuNjk1MzEyNSwieSI6NDYyfSx7IngiOjU2NS42OTUzMTI1LCJ5Ijo1MTQuNX0seyJ4Ijo1NjUuNjk1MzEyNSwieSI6NTU1Ljc1fV0=" data-look="classic" marker-end="url(#svg-arch_flowchart-v2-pointEnd)"/><path d="M839.398,379.5L839.398,384.5C839.398,389.5,839.398,399.5,839.398,413.25C839.398,427,839.398,444.5,839.398,462C839.398,479.5,839.398,497,811.075,512.839C782.752,528.677,726.105,542.854,697.782,549.943L669.458,557.031" id="svg-arch-L_RWishlist_Admin_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_RWishlist_Admin_0" data-points="W3sieCI6ODM5LjM5ODQzNzUsInkiOjM3OS41fSx7IngiOjgzOS4zOTg0Mzc1LCJ5Ijo0MDkuNX0seyJ4Ijo4MzkuMzk4NDM3NSwieSI6NDYyfSx7IngiOjgzOS4zOTg0Mzc1LCJ5Ijo1MTQuNX0seyJ4Ijo2NjUuNTc4MTI1LCJ5Ijo1NTguMDAyMjEyMTM2NzgxNH1d" data-look="classic" marker-end="url(#svg-arch_flowchart-v2-pointEnd)"/><path d="M1371.734,621.5L1371.734,626.5C1371.734,631.5,1371.734,641.5,1325.677,655.25C1279.62,669,1187.505,686.5,1107.871,707.901C1028.236,729.301,961.081,754.602,927.504,767.253L893.927,779.903" id="svg-arch-L_WF_Data_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_WF_Data_0" data-points="W3sieCI6MTM3MS43MzQzNzUsInkiOjYyMS41fSx7IngiOjEzNzEuNzM0Mzc1LCJ5Ijo2NTEuNX0seyJ4IjoxMDk1LjM5MDYyNSwieSI6NzA0fSx7IngiOjg5MC4xODM1OTM3NSwieSI6NzgxLjMxMzY2MjYxODE2MTJ9XQ==" data-look="classic" marker-end="url(#svg-arch_flowchart-v2-pointEnd)"/><path d="M565.695,610.25L565.695,617.125C565.695,624,565.695,637.75,565.695,653.375C565.695,669,565.695,686.5,583.777,707.745C601.858,728.99,638.021,753.98,656.102,766.476L674.184,778.971" id="svg-arch-L_Admin_Data_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_Admin_Data_0" data-points="W3sieCI6NTY1LjY5NTMxMjUsInkiOjYxMC4yNX0seyJ4Ijo1NjUuNjk1MzEyNSwieSI6NjUxLjV9LHsieCI6NTY1LjY5NTMxMjUsInkiOjcwNH0seyJ4Ijo2NzQuMTgzNTkzNzUsInkiOjc3OC45NzA2ODg0MzUwNzc0fV0=" data-look="classic"/><path d="M210.141,610.25L210.141,617.125C210.141,624,210.141,637.75,210.141,653.375C210.141,669,210.141,686.5,287.481,711.204C364.822,735.908,519.503,767.817,596.843,783.771L674.184,799.725" id="svg-arch-L_Storefront_Data_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_Storefront_Data_0" data-points="W3sieCI6MjEwLjE0MDYyNSwieSI6NjEwLjI1fSx7IngiOjIxMC4xNDA2MjUsInkiOjY1MS41fSx7IngiOjIxMC4xNDA2MjUsInkiOjcwNH0seyJ4Ijo2NzQuMTgzNTkzNzUsInkiOjc5OS43MjQ5MzAxNTQ1MTE1fV0=" data-look="classic"/></g><g class="edgeLabels"><g class="edgeLabel" transform="translate(210.140625, 231.25)"><g class="label" data-id="L_Theme_RLoyalty_0" transform="translate(-80.421875, -11.25)"><foreignObject width="160.84375" height="22.5"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>fetch · CORS-restricted</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(565.6953125, 231.25)"><g class="label" data-id="L_Theme_RCustomers_0" transform="translate(-17.53125, -11.25)"><foreignObject width="35.0625" height="22.5"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>fetch</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(839.3984375, 231.25)"><g class="label" data-id="L_Theme_RWishlist_0" transform="translate(-17.53125, -11.25)"><foreignObject width="35.0625" height="22.5"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>fetch</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(998.671875, 462)"><g class="label" data-id="L_Theme_Data_0" transform="translate(-80.984375, -22.5)"><foreignObject width="161.96875" height="45"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>reads tags &amp; metafields<br />at render (Liquid)</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(111.5, 462)"><g class="label" data-id="L_RLoyalty_Admin_0" transform="translate(-78.1484375, -22.5)"><foreignObject width="156.296875" height="45"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>read customer/orders<br />write tags + metafields</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(296.78125, 462)"><g class="label" data-id="L_RLoyalty_Storefront_0" transform="translate(-87.1328125, -11.25)"><foreignObject width="174.265625" height="22.5"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>read vip_tier metaobjects</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(565.6953125, 462)"><g class="label" data-id="L_RCustomers_Admin_0" transform="translate(-35.078125, -11.25)"><foreignObject width="70.15625" height="22.5"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>Admin API</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(839.3984375, 462)"><g class="label" data-id="L_RWishlist_Admin_0" transform="translate(-35.078125, -11.25)"><foreignObject width="70.15625" height="22.5"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>Admin API</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(1140.58148, 695.41461)"><g class="label" data-id="L_WF_Data_0" transform="translate(-76.71875, -22.5)"><foreignObject width="153.4375" height="45"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>read orders<br />write points + tier tags</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_Admin_Data_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_Storefront_Data_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default" id="svg-arch-flowchart-Theme-0" data-look="classic" transform="translate(741.01171875, 99)"><rect class="basic label-container" style="" x="-132" y="-61" width="264" height="122"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>Liquid Theme<br />c-loyalty-status · c-check-tier<br />loyalty-status.js</p></span></div></foreignObject></g></g><g class="node default" id="svg-arch-flowchart-RLoyalty-1" data-look="classic" transform="translate(210.140625, 341)"><rect class="basic label-container" style="" x="-105.515625" y="-38.5" width="211.03125" height="77"/><g class="label" style="" transform="translate(-73.515625, -22.5)"><rect/><foreignObject width="147.03125" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel"><p>/customer · /tiers<br />enrollment + tier read</p></span></div></foreignObject></g></g><g class="node default" id="svg-arch-flowchart-RCustomers-2" data-look="classic" transform="translate(565.6953125, 341)"><rect class="basic label-container" style="" x="-119.4296875" y="-38.5" width="238.859375" height="77"/><g class="label" style="" transform="translate(-87.4296875, -22.5)"><rect/><foreignObject width="174.859375" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel"><p>/api/customers/*<br />register · profile · address</p></span></div></foreignObject></g></g><g class="node default" id="svg-arch-flowchart-RWishlist-3" data-look="classic" transform="translate(839.3984375, 341)"><rect class="basic label-container" style="" x="-104.2734375" y="-38.5" width="208.546875" height="77"/><g class="label" style="" transform="translate(-72.2734375, -22.5)"><rect/><foreignObject width="144.546875" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel"><p>/wishlist/*<br />toggle · share · batch</p></span></div></foreignObject></g></g><g class="node default" id="svg-arch-flowchart-WF-4" data-look="classic" transform="translate(1371.734375, 583)"><rect class="basic label-container" style="" x="-124.625" y="-38.5" width="249.25" height="77"/><g class="label" style="" transform="translate(-92.625, -22.5)"><rect/><foreignObject width="185.25" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel"><p>Order-created workflow<br />points + tier re-assignment</p></span></div></foreignObject></g></g><g class="node default" id="svg-arch-flowchart-Admin-5" data-look="classic" transform="translate(565.6953125, 583)"><rect class="basic label-container" style="" x="-99.8828125" y="-27.25" width="199.765625" height="54.5"/><g class="label" style="" transform="translate(-67.8828125, -11.25)"><rect/><foreignObject width="135.765625" height="22.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel"><p>Admin GraphQL API</p></span></div></foreignObject></g></g><g class="node default" id="svg-arch-flowchart-Storefront-6" data-look="classic" transform="translate(210.140625, 583)"><rect class="basic label-container" style="" x="-113" y="-27.25" width="226" height="54.5"/><g class="label" style="" transform="translate(-81, -11.25)"><rect/><foreignObject width="162" height="22.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel"><p>Storefront GraphQL API</p></span></div></foreignObject></g></g><g class="node default" id="svg-arch-flowchart-Data-7" data-look="classic" transform="translate(782.18359375, 822.0036697387695)"><path d="M0,15.835777126099707 a108,15.835777126099707 0,0,0 216,0 a108,15.835777126099707 0,0,0 -216,0 l0,99.33577712609971 a108,15.835777126099707 0,0,0 216,0 l0,-99.33577712609971" class="basic label-container outer-path" style="" transform="translate(-108, -65.50366568914956)"/><g class="label" style="" transform="translate(-100, -23.083333333333336)"><rect/><foreignObject width="200" height="67.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>Customers · Orders<br />Metafields · Tags<br />vip_tier / benefit metaobjects</p></span></div></foreignObject></g></g></g></g></g><defs><filter id="svg-arch-drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><defs><filter id="svg-arch-drop-shadow-small" height="150%" width="150%"><feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><linearGradient id="svg-arch-gradient" gradientUnits="objectBoundingBox" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#5b86e0" stop-opacity="1"/><stop offset="100%" stop-color="hsl(144, 15.5555555556%, 81.1764705882%)" stop-opacity="1"/></linearGradient></svg></div>
+                <figure class="board-figure">
+          <div class="depmap">
+            <div class="rail">
+              <div class="left">ADR-0001 · Architecture</div>
+              <div class="center">Cecilie Bahnsen — Loyalty / VIP Tier Program</div>
+              <div class="right">Signifly</div>
+            </div>
+            <div class="dm-title">Mapped out all dependencies</div>
+            <div class="legend">
+              <span><i style="background: var(--blue)"></i>Browser / storefront</span>
+              <span><i style="background: var(--grey)"></i>Shopify platform</span>
+              <span><i style="background: var(--brown)"></i>Signifly services</span>
+              <span><i style="background: var(--actor)"></i>Actor</span>
+              <span><i style="background: var(--db)"></i>Data store</span>
+            </div>
+            <div class="board-wrap">
+              <div class="scaler" id="dm-scaler">
+                <div class="stage" id="dm-stage">
+                  <svg class="wires" id="dm-wires" viewBox="0 0 1240 600" preserveAspectRatio="none"></svg>
+                </div>
+              </div>
+            </div>
+          </div>
           <figcaption>
-            <span class="lbl">FIG 2</span
-            ><span
-              >Component &amp; dependency map — yellow = external services,
-              green = Shopify, blue = browser</span
-            ><span class="zoom btn" data-zoom>⤢ Click to enlarge</span>
+            <span class="lbl">FIG 2</span><span>Component &amp; dependency map — blue = browser, grey = Shopify, brown = Signifly services; cylinders are Shopify-native data stores</span>
           </figcaption>
         </figure>
         <p><strong>Dependency summary</strong></p>
@@ -949,6 +1101,141 @@
         document.addEventListener("keydown", function (e) {
           if (e.key === "Escape") close();
         });
+      })();
+    </script>
+    <script>
+      // ===== Dependency board renderer (FIG 2) =====
+      (function () {
+        const stage = document.getElementById("dm-stage");
+        if (!stage) return;
+        const svg = document.getElementById("dm-wires");
+        const scaler = document.getElementById("dm-scaler");
+        const wrap = scaler.parentElement;
+        const SVGNS = "http://www.w3.org/2000/svg";
+
+        const NODES = {
+          customer: { kind: "actor", t: "Customer", s: "Logged-in shopper on their account page", x: 512, y: 58, w: 138, h: 60, icon: "person" },
+          admin: { kind: "actor", t: "Merchant Admin", s: "Edits tiers & benefits in Shopify Admin", x: 688, y: 58, w: 152, h: 60, icon: "person" },
+          theme: { kind: "blue", t: "Liquid Theme", s: "Renders VIP status · gates content", x: 486, y: 184, w: 146, h: 60 },
+          tierui: { kind: "blue", t: "VIP Tier UI", s: "Reads tags & metaobjects in Liquid", x: 648, y: 184, w: 142, h: 60 },
+          api: { kind: "brown", t: "Customer API", s: "Node/Express proxy · enroll, profile, wishlist", x: 974, y: 184, w: 152, h: 62 },
+          vercel: { kind: "brownlite", t: "Vercel", s: "Deployment host", x: 974, y: 300, w: 118, h: 56 },
+          secrets: { kind: "brownlite", t: "Env Secrets", s: "Admin & Storefront tokens", x: 1108, y: 300, w: 120, h: 56 },
+          core: { kind: "grey", t: "Shopify Core", s: "System of record", x: 130, y: 324, w: 140, h: 60 },
+          flow: { kind: "grey", t: "Shopify Flow", s: "Recalc points & tier on order", x: 292, y: 324, w: 150, h: 60 },
+          adminapi: { kind: "grey", t: "Admin API", s: "read/write_customers", x: 500, y: 324, w: 134, h: 60 },
+          sfapi: { kind: "grey", t: "Storefront API", s: "metaobjects", x: 652, y: 324, w: 140, h: 60 },
+          orders: { kind: "db", t: "Orders", s: "order/create events", x: 140, y: 454, w: 130, h: 58 },
+          cdata: { kind: "db", t: "Customer data", s: "loyalty_points · enrolled · vip_tier tag", x: 320, y: 454, w: 164, h: 58 },
+          meta: { kind: "db", t: "vip_tier metaobjects", s: "Tier catalog · thresholds · benefits", x: 520, y: 454, w: 168, h: 58 },
+        };
+
+        const GROUPS = [
+          { cls: "blue", label: "Browser", x: 466, y: 150, w: 344, h: 120 },
+          { cls: "green", label: "Shopify Plus", x: 110, y: 288, w: 702, h: 250 },
+          { cls: "brown", label: "Signifly Services", x: 954, y: 150, w: 290, h: 234 },
+        ];
+
+        const EDGES = [
+          { f: "customer", fs: "bottom", ft: 0.5, t: "theme", ts: "top", tt: 0.5, l: "loads account page" },
+          { f: "admin", fs: "bottom", ft: 0.5, t: "meta", ts: "top", tt: 0.55, l: "edits tiers & benefits", lt: 0.4 },
+          { f: "tierui", fs: "right", ft: 0.5, t: "api", ts: "left", tt: 0.5, l: "GET /customer" },
+          { f: "theme", fs: "bottom", ft: 0.4, t: "cdata", ts: "top", tt: 0.2, l: "reads customer.tags / metafields", lt: 0.32 },
+          { f: "tierui", fs: "bottom", ft: 0.5, t: "meta", ts: "top", tt: 0.28, l: "shop.metaobjects.vip_tier", lt: 0.34 },
+          { f: "api", fs: "left", ft: 0.7, t: "adminapi", ts: "right", tt: 0.35, l: "read/write customers" },
+          { f: "api", fs: "left", ft: 0.95, t: "sfapi", ts: "top", tt: 0.7, l: "Storefront metaobjects" },
+          { f: "api", fs: "bottom", ft: 0.32, t: "vercel", ts: "top", tt: 0.5, l: "deployed on" },
+          { f: "api", fs: "bottom", ft: 0.72, t: "secrets", ts: "top", tt: 0.5, l: "env tokens" },
+          { f: "flow", fs: "bottom", ft: 0.32, t: "orders", ts: "top", tt: 0.5, l: "on order/create" },
+          { f: "flow", fs: "bottom", ft: 0.62, t: "cdata", ts: "top", tt: 0.5, l: "writes points + tier" },
+          { f: "adminapi", fs: "bottom", ft: 0.45, t: "cdata", ts: "top", tt: 0.82, l: "writes on enrollment" },
+          { f: "sfapi", fs: "bottom", ft: 0.5, t: "meta", ts: "top", tt: 0.8, l: "reads catalog" },
+          { f: "api", fs: "top", ft: 0.4, t: "customer", ts: "right", tt: 0.5, l: "tier + benefits (JSON)", accent: true },
+        ];
+
+        const PERSON = '<svg class="person" viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="8" r="4.2"/><path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8z"/></svg>';
+        const DBICON = '<svg class="dbicon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>';
+
+        for (const g of GROUPS) {
+          const el = document.createElement("div");
+          el.className = "group " + g.cls;
+          el.style.cssText = "left:" + g.x + "px;top:" + g.y + "px;width:" + g.w + "px;height:" + g.h + "px";
+          el.innerHTML = '<span class="glabel">' + g.label + "</span>";
+          stage.appendChild(el);
+        }
+
+        for (const id in NODES) {
+          const n = NODES[id];
+          const el = document.createElement("div");
+          el.className = "node " + n.kind;
+          el.style.cssText = "left:" + n.x + "px;top:" + n.y + "px;width:" + n.w + "px;height:" + n.h + "px";
+          const head = n.kind === "db" ? DBICON : '<div class="dots"><i></i><i></i><i></i></div>';
+          el.innerHTML = head + '<div class="nt">' + n.t + '</div><div class="ns">' + n.s + "</div>" + (n.icon === "person" ? PERSON : "");
+          stage.appendChild(el);
+        }
+
+        function anchor(n, side, t) {
+          switch (side) {
+            case "top": return { x: n.x + n.w * t, y: n.y, nx: 0, ny: -1 };
+            case "bottom": return { x: n.x + n.w * t, y: n.y + n.h, nx: 0, ny: 1 };
+            case "left": return { x: n.x, y: n.y + n.h * t, nx: -1, ny: 0 };
+            case "right": return { x: n.x + n.w, y: n.y + n.h * t, nx: 1, ny: 0 };
+          }
+        }
+        const bez = (p, t) => {
+          const u = 1 - t;
+          return {
+            x: u * u * u * p[0].x + 3 * u * u * t * p[1].x + 3 * u * t * t * p[2].x + t * t * t * p[3].x,
+            y: u * u * u * p[0].y + 3 * u * u * t * p[1].y + 3 * u * t * t * p[2].y + t * t * t * p[3].y,
+          };
+        };
+
+        for (const e of EDGES) {
+          const a = anchor(NODES[e.f], e.fs, e.ft);
+          const b = anchor(NODES[e.t], e.ts, e.tt);
+          const dist = Math.hypot(b.x - a.x, b.y - a.y);
+          const k = Math.max(46, dist * 0.34);
+          const c1 = { x: a.x + a.nx * k, y: a.y + a.ny * k };
+          const c2 = { x: b.x + b.nx * k, y: b.y + b.ny * k };
+
+          const path = document.createElementNS(SVGNS, "path");
+          path.setAttribute("d", "M " + a.x + " " + a.y + " C " + c1.x + " " + c1.y + ", " + c2.x + " " + c2.y + ", " + b.x + " " + b.y);
+          path.setAttribute("fill", "none");
+          path.setAttribute("stroke", e.accent ? "var(--accent)" : "var(--line)");
+          path.setAttribute("stroke-width", e.accent ? "1.6" : "1.4");
+          path.setAttribute("stroke-dasharray", e.accent ? "1 5" : "5 5");
+          if (e.accent) path.setAttribute("stroke-linecap", "round");
+          svg.appendChild(path);
+
+          const dot = document.createElementNS(SVGNS, "circle");
+          dot.setAttribute("cx", b.x);
+          dot.setAttribute("cy", b.y);
+          dot.setAttribute("r", "2.4");
+          dot.setAttribute("fill", e.accent ? "var(--accent)" : "var(--line)");
+          svg.appendChild(dot);
+
+          if (e.l) {
+            const m = bez([a, c1, c2, b], e.lt == null ? 0.5 : e.lt);
+            const chip = document.createElement("div");
+            chip.className = "elabel";
+            chip.style.left = m.x + "px";
+            chip.style.top = m.y + "px";
+            chip.textContent = e.l;
+            stage.appendChild(chip);
+          }
+        }
+
+
+        // fit the 1240px board to the column width
+        function fit() {
+          const avail = wrap.clientWidth - 48; // board-wrap horizontal padding
+          const scale = Math.min(1, avail / 1240);
+          scaler.style.width = 1240 * scale + "px";
+          scaler.style.height = 600 * scale + "px";
+          stage.style.transform = "scale(" + scale + ")";
+        }
+        fit();
+        window.addEventListener("resize", fit);
       })();
     </script>
   </body>
